@@ -10,6 +10,18 @@
 #include <vector>
 
 #include "C.hpp"
+#include "../Exercise 3/C.hpp"
+
+/**
+ * Overloaded ctor
+ * @param size Initial size of the member vector
+ */
+template<typename T>
+C<T>::C(int size) : size{size}
+{
+    std::cout << "Overloaded ctor" << std::endl;
+    vec = std::make_unique<std::vector<T>>(size);
+}
 
 /**
  * Default dtor
@@ -28,7 +40,7 @@ C<T>::~C()
 template<typename T>
 void C<T>::print() const
 {
-    std::for_each(vec.begin(), vec.end(), [&] (T value) {std::cout << value << std::endl;});
+    std::for_each(vec->begin(), vec->end(), [&] (T value) {std::cout << value << std::endl;});
 }
 
 /**
@@ -37,16 +49,16 @@ void C<T>::print() const
  * @param value A value representing the generic type that will be inserted into the container
  */
 template<typename T>
-void C<T>::insert(T value)
+void C<T>::insert(const T& value)
 {
-    if (vec.size() >= 0) vec.push_back(value);
+    if (vec->size() > 0) vec->push_back(value);
 }
 
 /**
  * Accessor for the member vector
  */
 template<typename T>
-std::vector<T>& C<T>::getVec() const noexcept
+const std::unique_ptr<std::vector<T>>& C<T>::getVec() const noexcept
 {
     return vec;
 }
@@ -55,16 +67,17 @@ std::vector<T>& C<T>::getVec() const noexcept
  * Setter for the source vector
  */
 template<typename T>
-void C<T>::setVec(const std::vector<T>& source) noexcept
+void C<T>::setVec(int index, T element) noexcept
 {
-    vec = source;
+    if (index < 0 || index >= vec->size()) return;
+    vec->at(index) = element;
 }
 
 /**
  * Accessor for the member array
  */
 template<typename T>
-std::array<int, 5>& C<T>::getArray() noexcept
+const std::array<int, 5>& C<T>::getArray() noexcept
 {
     return array;
 }
@@ -73,9 +86,10 @@ std::array<int, 5>& C<T>::getArray() noexcept
  * Setter for the member array
  */
 template<typename T>
-void C<T>::setArray(const std::array<int, 5> &source) noexcept
+void C<T>::setArray(int index, int element) noexcept
 {
-    array = source;
+    if (index < 0 || index >= array.size()) return;
+    array.at(index) = element;
 }
 
 /**
@@ -100,9 +114,10 @@ template<typename T>
 T C<T>::sumVector() noexcept
 {
     T sum = 0;
-    for (int element : vec)
+    auto end = vec->cend();
+    for (auto it = vec->begin(); it != end; ++it)
     {
-        sum += element;
+        sum += *it;
     }
 
     return sum;
@@ -120,6 +135,15 @@ template<typename T>
 constexpr int C<T>::getPublishFrequency() noexcept
 {
     return PUBLISH_FREQ_MILLIS;
+}
+
+/**
+ * Size accessor
+ */
+template<typename T>
+int C<T>::getSize() const noexcept
+{
+    return size;
 }
 
 #endif

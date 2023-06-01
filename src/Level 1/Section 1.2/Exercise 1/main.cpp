@@ -16,15 +16,7 @@
 void test_defaultedFunctions()
 {
     auto myClass = C<int>();
-
-    // Create the underlying data using uniform initialization
-    for (int i = 0; i < 6; ++i)
-    {
-        myClass.insert(i);
-    }
-
-    // Log the data
-    myClass.print();
+    assert(0 == myClass.getSize());
 }
 
 /**
@@ -34,12 +26,6 @@ void test_defaultedFunctions()
 void test_deletedFunctions()
 {
     auto myClass = C<int>();
-
-    // Create the underlying data using uniform initialization
-    for (int i = 0; i < 6; ++i)
-    {
-        myClass.insert(i);
-    }
 
     // Copy constructor is deleted, so it can't be used. Any attempt to use it results in a compilation error
     // auto copy = C<int>(myClass);
@@ -67,14 +53,11 @@ void test_setAndSumArray()
 {
     auto myClass = C<int>();
 
-    // Create new array
-    constexpr std::array<int, 5> array = {6, 7, 8, 9, 10};
+    // Set new array
+    for (int i = 0; i < 5; ++i) myClass.setArray(i, i);
 
-    // Use array setter
-    myClass.setArray(array);
-
-    // Assert new sum equals 40
-    assert(40 == myClass.sumArray());
+    // Assert new sum equals 10
+    assert(10 == myClass.sumArray());
 }
 
 /**
@@ -84,14 +67,11 @@ void test_setAndSumVector()
 {
     auto myClass = C<int>();
 
-    // Create new vector
-    std::vector<int> vector = {6, 7, 8, 9, 10};
+    // Set new vector
+    for (int i = 0; i < 5; ++i) myClass.setVec(i, i);
 
-    // Use array setter
-    myClass.setVec(vector);
-
-    // Assert new sum equals 40
-    assert(40 == myClass.sumVector());
+    // Assert new sum equals 10
+    assert(10 == myClass.sumVector());
 }
 
 /**
@@ -105,6 +85,28 @@ void test_constExpr()
     assert(1000 == myClass.getPublishFrequency());
 }
 
+/**
+ * Utility test to ensure all functions from previous lectures continue to compile
+ */
+void test_backwardCompatibility()
+{
+    // Test constructors
+    auto source = C<double>();
+    for (int i = 0; i < 5; ++i) source.setVec(i, i);
+
+    // Test accessor and mutators for vector
+    source.insert(5);
+    source.insert(6);
+    assert(21 == source.sumVector());
+    source.print();
+    auto& vec = source.getVec();
+
+    // Test accessors and mutators for array
+    for (int i = 0; i < 5; ++i) source.setArray(i, i);
+    assert(10 == source.sumArray());
+    auto& array = source.getArray();
+}
+
 int main()
 {
     test_defaultedFunctions();
@@ -113,5 +115,6 @@ int main()
     test_setAndSumArray();
     test_setAndSumVector();
     test_constExpr();
+    test_backwardCompatibility();
     return 0;
 }

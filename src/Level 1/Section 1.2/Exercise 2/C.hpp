@@ -9,24 +9,32 @@
 #include <vector>
 #include <string>
 
+/**
+ * Example class that illustrates modern C++ concepts and features
+ */
 template<typename T>
 class C
 {
 private:
-    std::vector<T> vec;
+    constexpr static int DEFAULT_SIZE = 5;
+
+    int size;
+    std::unique_ptr<std::vector<T>> vec;
 
 public:
-    constexpr explicit C();
-    C(const C<T>& source);
-    C(const C<T>&& source) noexcept;
-    virtual ~C();
+    constexpr explicit C(); // no arg ctor
+    explicit C(int size); // overloaded ctor
+    C(const C<T>& source); // copy ctor
+    C(C<T>&& source) noexcept; // move ctor
+    virtual ~C(); // default dtor
 
     // Operator overload
     C<T>& operator=(const C<T>& source);
+    C<T>& operator=(C<T>&& source) noexcept;
 
     // Member functions
     void print() const;  // not eligible for noexcept because stream operations can throw an exception
-    void insert(T value); // not eligible for noexcept because insertion operations can fail
+    void insert(const T& value); // not eligible for noexcept because insertion operations can fail
     int sumArray() noexcept;
     T sumVector() noexcept;
 
@@ -37,8 +45,8 @@ public:
     void swapMoveStyle(U&& a, U&& b) noexcept;
 
     // Accessors and mutators
-    std::vector<T>& getVec() const noexcept;
-    void setVec(const std::vector<T>& source) noexcept;
+    const std::unique_ptr<std::vector<T>>& getVec() const noexcept;
+    void setVec(int index, T element) noexcept;
 };
 
 #ifndef C_PP
