@@ -20,8 +20,8 @@ using namespace std::placeholders;
 void test_freeFunction3()
 {
     // _1, _2, _3 represent future arguments
-    auto bind = std::bind(&freeFunction3, _1, _2, _3);
-    auto actual = bind(1, 2, 3);
+    auto bind = std::bind(&freeFunction3, _2, _1, _3);
+    auto actual = bind(1, 2, 3); // Equivalent to invoking freeFunction3(2, 1, 3)
     std::cout << actual << std::endl;
     assert(6 == actual);
 }
@@ -32,9 +32,9 @@ void test_freeFunction3()
 void test_freeFunction2()
 {
     // _1 and _2 represent future arguments
-    // _3 represents a current argument
-    auto bind = std::bind(freeFunction3, _1, _2, 100);
-    auto actual = bind(1, 2);
+    // _3 represents a bound argument
+    auto bind = std::bind(freeFunction3, 100, _1, _2);
+    auto actual = bind(1, 2); // 1 is bound to _1. 2 is bound to _2. Equivalent to invoking freeFunction(100, 1, 2)
     std::cout << actual << std::endl;
     assert(103 == actual);
 }
@@ -45,9 +45,9 @@ void test_freeFunction2()
 void test_freeFunction1()
 {
     // _1 represents a future argument
-    // _2 and _3 represent current arguments
-    auto bind = std::bind(&freeFunction3, _1, 10, 11);
-    auto actual = bind(4); // 1000 and 77 should be unused
+    // _2 and _3 represent bounded arguments
+    auto bind = std::bind(&freeFunction3, 10, _1, 11);
+    auto actual = bind(4); // 4 is bound to _1. Equivalent to invoking freeFunction(10, 4, 11)
     std::cout << actual << std::endl;
     assert(25 == actual);
 }
@@ -57,7 +57,7 @@ void test_freeFunction1()
  */
 void test_freeFunction0()
 {
-    // _1, _2, and _3 represent current arguments
+    // _1, _2, and _3 represent bounded arguments
     auto bind = std::bind(&freeFunction3, 10, 11, 4);
     auto actual = bind();
     std::cout << actual << std::endl;
