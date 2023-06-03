@@ -9,6 +9,9 @@
 
 #include "Shape.hpp"
 
+/**
+ * Circle class that illustrates polymorphic functionality with variadic templates
+ */
 class Circle : public Shape
 {
 public:

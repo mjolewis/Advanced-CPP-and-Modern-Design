@@ -7,6 +7,9 @@
 
 #include <iostream>
 
+/**
+ * Valve class that illustrates non-polymorphic functionality with variadic templates
+ */
 class Valve
 {
 public:
