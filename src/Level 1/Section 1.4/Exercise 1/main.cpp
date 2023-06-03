@@ -10,15 +10,17 @@
 
 
 // Free function to demonstrate assignment to a function wrapper
-double root(double value)
+template<typename T>
+constexpr T root(T value)
 {
     return sqrt(value);
 }
 
 // Struct to represent a function object
+template<typename T>
 struct functionObject
 {
-    double operator()(double value) { return sqrt(value); };
+    double operator()(T value) { return sqrt(value); };
 };
 
 // Alias for a function wrapper
@@ -33,7 +35,7 @@ void test_functionWrapper_freeFunction()
     std::cout << "square root for the free function=";
 
     // Assign a free function to a function wrapper
-    FunctionType<double> f = root;
+    FunctionType<double> f = root<double>;
 
     // Log the square root
     Utils::print(f, 9.0);
@@ -57,7 +59,7 @@ void test_functionWrapper_functionObject()
     std::cout << "square root for the function object=";
 
     // Assign a function object to a function wrapper
-    FunctionType<double> f = functionObject();
+    FunctionType<double> f = functionObject<double>();
 
     // Log the square root
     Utils::print(f, 25.0);
