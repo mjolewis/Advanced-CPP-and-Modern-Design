@@ -5,11 +5,20 @@
 #ifndef ADVANCED_CPP_AND_MODERN_DESIGN_UTILS_HPP
 #define ADVANCED_CPP_AND_MODERN_DESIGN_UTILS_HPP
 
+#include "functional"
+
+// Alias for a global function wrapper
+template<typename T>
+using FunctionType = std::function<T (const T& t)>;
+
 /**
  * Utility struct for common functions
  */
 struct Utils
 {
+    template<typename T>
+    constexpr static void print(const FunctionType<T>& f, T t);
+
     template<typename T>
     constexpr static void print(const T& arg);
 
