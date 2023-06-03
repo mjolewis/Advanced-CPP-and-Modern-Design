@@ -24,7 +24,7 @@ public:
     constexpr explicit Circle(const VoidFunctionType<T>& functionType) : Shape<T>{functionType} {};
     ~Circle() = default;
 
-    constexpr void rotate(const T& value, const T& multiplier) const { Shape<T>::f(value * multiplier); }
+    constexpr void rotate(const T& value) const override { Shape<T>::f(value); }
 };
 
 #endif //ADVANCED_CPP_AND_MODERN_DESIGN_CIRCLE_HPP

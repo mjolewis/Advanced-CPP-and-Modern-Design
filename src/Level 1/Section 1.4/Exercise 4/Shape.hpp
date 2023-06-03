@@ -28,7 +28,7 @@ public:
     constexpr explicit Shape(const VoidFunctionType<T>& functionType) : f{functionType} {};
     ~Shape() = default;
 
-    constexpr void rotate(const T& value) const { f(value); }
+    virtual constexpr void rotate(const T& value) const { f(value); }
 };
 
 #endif //ADVANCED_CPP_AND_MODERN_DESIGN_SHAPE_HPP

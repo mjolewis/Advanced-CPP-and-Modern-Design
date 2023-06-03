@@ -19,7 +19,7 @@ void test_shapeRotate_lambda()
 void test_circleRotate_lambda()
 {
     Circle<int> circle([] (int value) -> void { std::cout << "Circle::rotate=" << value << std::endl; });
-    circle.rotate(2, 2);
+    circle.rotate(4);
 }
 
 int main()
