@@ -25,6 +25,7 @@ private:
 public:
     NextGenPolymorphism() = delete;
     constexpr NextGenPolymorphism(const FunctionType<T>& func, const T& factor) : factor{factor} {this->func = func;}
+    virtual ~NextGenPolymorphism() = default;
 
     constexpr T execute(T value) const { return func(value) * factor; }
     void setFunction(const FunctionType<T>& _func) { func = _func; }
