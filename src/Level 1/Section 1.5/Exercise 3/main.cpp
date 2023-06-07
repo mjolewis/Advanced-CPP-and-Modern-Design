@@ -138,6 +138,9 @@ void test_statistics()
     assert(1.3333333333333333 == variance);
 }
 
+/**
+ * Calculate the median for both even and odd sized containers
+ */
 void test_median()
 {
     // even sized vector
@@ -151,6 +154,11 @@ void test_median()
     assert(3 == median2);
 }
 
+/**
+ * Calculate the mode for containers.
+ * When there are two or more values that are candidates to be the mode,
+ * then the smallest value will be chosen
+ */
 void test_mode()
 {
     std::vector<int> vec1{1, 1, 10, 4, 2, 27, 14, 10};
