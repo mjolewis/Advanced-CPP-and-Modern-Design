@@ -36,7 +36,7 @@ auto findByPredicate(const Container& container, T target)
 
 /**
  * Calculate the maximum and relative error between two vectors.
- * Return the values as a std::pair
+ * Return the values as a std::tuple
  */
 template<typename Container, typename T>
 auto getErrors(Container first, Container second, int startIdx, int endIdx)
@@ -55,17 +55,16 @@ auto getErrors(Container first, Container second, int startIdx, int endIdx)
     // Find the index of the max norm in the resulting vector
     const auto& maxNorm = std::max_element(distances.cbegin(), distances.cend());
 
-    // Predicate to find the index of max norm
-    int idx = 0;
-    for (idx; idx < distances.size(); ++idx)
+    Container indices;
+    for (int i = 0; i < distances.size(); ++i)
     {
-        if (distances.at(idx) == *maxNorm) break;
+        if (distances.at(i) == *maxNorm) indices.push_back(std::move(i));
     }
 
     // Calculate relative error
-    auto relativeError = *maxNorm / first.at(idx);
+    auto relativeError = *maxNorm / first.at(indices.at(0));
 
-    return std::make_pair(*maxNorm, relativeError);
+    return std::make_tuple(*maxNorm, relativeError, indices);
 }
 
 /**
@@ -101,9 +100,20 @@ void test_maximumError()
 {
     std::vector<double> v1{1.0, 2.5, 3.5, 4.5, 6.0, 10.0, 11.25 };
     std::vector<double> v2{2.5, 3.5, 4.0, 4.25, 5.0, 7.5, 10.5};
-    auto pair = getErrors<std::vector<double>, double>(v1, v2, 2, 6);
-    assert(2.5 == pair.first);
-    assert(pair.first / 4.5 == pair.second);
+    auto result = getErrors<std::vector<double>, double>(v1, v2, 2, 6);
+    assert(2.5 == std::get<0>(result));
+    assert(2.5 / 4.5 == std::get<1>(result));
+    assert(3 == std::get<2>(result).at(0));
+
+    // Test results where the vectors have the same max error. Results should include all indices
+    std::vector<double> v3{4, 5, 6};
+    std::vector<double> v4{7, 8, 9};
+    result = getErrors<std::vector<double>, double>(v3, v4, 0, 2);
+    assert(3 == std::get<0>(result));
+    assert(0.75 == std::get<1>(result));
+    assert(0 == std::get<2>(result).at(0));
+    assert(1 == std::get<2>(result).at(1));
+    assert(2 == std::get<2>(result).at(2));
 }
 
 int main()
