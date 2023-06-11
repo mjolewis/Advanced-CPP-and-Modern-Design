@@ -20,8 +20,7 @@ void test_TmpClass()
 
     TMPClass instance{n, startValue, iFunction, oFunction};
 
-    instance.compute();
-    instance.postprocessor();
+    instance.computer();
 }
 
 int main()
