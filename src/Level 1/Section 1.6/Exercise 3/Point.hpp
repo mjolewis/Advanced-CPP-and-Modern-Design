@@ -7,6 +7,9 @@
 
 #include <utility>
 
+/**
+ * A simple Point object used to demonstrate different types of initialization
+ */
 class Point
 {
 private:
@@ -17,13 +20,13 @@ public:
     constexpr Point() = default;
     explicit Point(int x, int y) : xCoordinate{x}, yCoordinate{y} {};
     Point(const Point& source) : xCoordinate{source.xCoordinate}, yCoordinate{source.yCoordinate} {};
-    Point(Point&& source)  noexcept : xCoordinate{std::move(source.xCoordinate)}, yCoordinate{std::move(source.yCoordinate)} {};
+    Point(Point&& source) = delete;
     virtual ~Point() = default;
 
-    int getXcoordinate() noexcept { return xCoordinate; }
-    int getYcoordinate() noexcept { return yCoordinate; }
+    int getXcoordinate() const noexcept { return xCoordinate; }
+    int getYcoordinate() const noexcept { return yCoordinate; }
 
-    void setPoint(const Point& source) {};
+    void setPoint(const Point& source) { xCoordinate = source.xCoordinate; yCoordinate = source.yCoordinate; };
 };
 
 #endif //ADVANCED_CPP_AND_MODERN_DESIGN_POINT_HPP

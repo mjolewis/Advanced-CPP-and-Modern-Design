@@ -40,7 +40,7 @@ void test_DirectInitialization()
 }
 
 /**
- * Demonstrate direct initialization with an copy constructor.
+ * Demonstrate copy initialization with an copy constructor.
  */
 void test_CopyInitialization()
 {
@@ -51,7 +51,7 @@ void test_CopyInitialization()
 }
 
 /**
- * Demonstrate direct initialization by setting a point as an argument in a direct initialization
+ * Demonstrate list initialization by setting a point as an argument in a direct initialization
  */
 void test_ListInitialization()
 {
@@ -62,19 +62,22 @@ void test_ListInitialization()
 }
 
 /**
- * Aggregate initialization is a form of list initialization for arrays or class types
- * (often structs or unions)
+ * Aggregate initialization is a form of list initialization
+ * for arrays or class types (often structs or unions)
  */
 void test_AggregateInitialization()
 {
-    int array[3] = {1, 2, 3};
-    assert(1 == array[0]);
-    assert(2 == array[1]);
-    assert(3 == array[2]);
+    S aggregateInitialization{1, {2, 3, {4, 5, 6}}};
+    assert(1 == aggregateInitialization.x);
+    assert(2 == aggregateInitialization.b.i);
+    assert(3 == aggregateInitialization.b.j);
+    assert(4 == aggregateInitialization.b.a[0]);
+    assert(5 == aggregateInitialization.b.a[1]);
+    assert(6 == aggregateInitialization.b.a[2]);
 }
 
 /**
- * Demonstrate direct initialization with an copy constructor.
+ * Demonstrate reference initialization.
  *
  * Variables of reference type must be initialized with an object of
  * the type from which the reference type is derived,
@@ -88,20 +91,14 @@ void test_ReferenceInitialization()
 }
 
 /**
- * Test different initialization techniques in an attempt to find one that doesn't compile for Struct S
+ * Test different initialization techniques in an attempt to find one that doesn't compile.
+ *
+ * Note - This can't compile because the move ctor has been explicitly deleted
  */
 void test_illFormedInitialization()
 {
-    S defaultInitialization; // compiles
-    S directInitialization{}; // compiles
-    S valueInitialization{1, {1, 2}}; // compiles
-    S copyInitialization(valueInitialization); // compiles
-    copyInitialization.b.i = 1; // compiles
-    copyInitialization.b.j = 1; // compiles
-//    copyInitialization.b.a = {1, 2, 3}; does not compile
-    S listInitialization{1, {1, 2, {3, 4, 5}}}; // compiles
-    S aggregateInitialization1{1, {1, 2, {3, 4, 5}}}; // compiles
-    S& referenceInitialization = listInitialization; // compiles
+//    auto&& point1 = Point{1, 2};
+//    Point point2{std::move(point1)};
 }
 
 int main()
