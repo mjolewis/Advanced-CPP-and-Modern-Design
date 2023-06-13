@@ -93,7 +93,9 @@ void test_ReferenceInitialization()
 /**
  * Test different initialization techniques in an attempt to find one that doesn't compile.
  *
- * Note - This can't compile because the move ctor has been explicitly deleted
+ * @Avi - I interpreted this exercise as an open ended type of question where I could simply find
+ * a way to make any class initialization not compile. As a result, the test below can't compile
+ * because the move ctor has been explicitly deleted.
  */
 void test_illFormedInitialization()
 {
