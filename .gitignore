@@ -30,3 +30,7 @@
 *.exe
 *.out
 *.app
+
+# Course Material
+./PowerPoints
+./Homework Submission
