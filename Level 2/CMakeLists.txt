@@ -20,6 +20,9 @@ add_executable(Advanced_CPP_and_Modern_Design
         #"src/Section 2.1/Exercise 3/Base.hpp"
         #"src/Section 2.1/Exercise 3/Point.hpp"
         #"src/Section 2.1/Exercise 3/main.cpp"
-        "src/Section 2.1/Exercise 4/main.cpp"
-        "src/Section 2.1/Exercise 4/Shape.hpp"
-        "src/Section 2.1/Exercise 4/Point.hpp")
+        #"src/Section 2.1/Exercise 4/main.cpp"
+        #"src/Section 2.1/Exercise 4/Shape.hpp"
+        #"src/Section 2.1/Exercise 4/Point.hpp"
+        "src/Section 2.2/Exercise 1/main.cpp"
+        "src/Section 2.2/Exercise 1/Numerics.cpp"
+        "src/Section 2.2/Exercise 1/Numerics.hpp")
