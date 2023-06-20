@@ -31,7 +31,7 @@ void test_vectorSpace_addition()
 }
 
 /**
- * Tests vector space addition on fundamental types
+ * Tests scalar addition
  */
 void test_scalar_addition()
 {
@@ -58,7 +58,7 @@ void test_vectorSpace_additiveInverse()
 }
 
 /**
- * Tests vector space additive inverse on fundamental types
+ * Tests scalar additive inverse
  */
 void test_scalar_additiveInverse()
 {
@@ -88,7 +88,7 @@ void test_vectorSpace_multiplication()
 }
 
 /**
- * Tests vector space multiplication on fundamental types
+ * Tests scalar multiplication
  */
 void test_scalar_multiplication()
 {
