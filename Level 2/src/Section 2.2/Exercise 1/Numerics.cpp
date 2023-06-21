@@ -101,8 +101,6 @@ T Numerics::MultiplicationImpl(const T& t1, const T& t2, std::true_type)
     T result = T(t1);
     for (int i = 0; i < t1.size(); ++i)
     {
-        auto test = t1[i];
-        auto test1 = t2[i];
         result[i] = t1[i] * t2[i];
     }
 
