@@ -9,7 +9,6 @@
 #include <iostream>
 #include <cmath>
 #include <functional>
-#include <sstream>
 
 // Function maps Domain to Range
 template <typename R, typename D>
@@ -97,7 +96,7 @@ FunctionType<R,D> operator - (const FunctionType<R,D>& f)
     };
 }
 
-//Composition of functions
+// Composition of functions
 template <typename R, typename D>
 FunctionType<R,D> operator << (const FunctionType<R,D>& f, const FunctionType<R,D>& g)
 {
