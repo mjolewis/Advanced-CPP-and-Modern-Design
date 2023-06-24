@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.23)
 project(Advanced_CPP_and_Modern_Design)
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 11)
 
 # Start Boost dependency
 set(BOOST_INCLUDE /usr/local/Cellar/boost/1.81.0)
@@ -16,10 +16,10 @@ endif()
 
 add_executable(Advanced_CPP_and_Modern_Design
         #"src/Section 2.1/Exercise 2/main.cpp"
-        #"src/Section 2.1/Exercise 3/Shape.hpp"
-        #"src/Section 2.1/Exercise 3/Base.hpp"
-        #"src/Section 2.1/Exercise 3/Point.hpp"
-        #"src/Section 2.1/Exercise 3/main.cpp"
+        #"src/Section 2.1/Exercise 4/Shape.hpp"
+        #"src/Section 2.1/Exercise 4/Base.hpp"
+        #"src/Section 2.1/Exercise 4/Point.hpp"
+        #"src/Section 2.1/Exercise 4/main.cpp"
         #"src/Section 2.1/Exercise 4/main.cpp"
         #"src/Section 2.1/Exercise 4/Shape.hpp"
         #"src/Section 2.1/Exercise 4/Point.hpp"
@@ -27,15 +27,17 @@ add_executable(Advanced_CPP_and_Modern_Design
         #"src/Section 2.2/Exercise 1/Numerics.cpp"
         #"src/Section 2.2/Exercise 1/Numerics.hpp"
         #"src/Section 2.2/Exercise 2/main.cpp"
-        #"src/Section 2.2/Exercise 3/main.cpp"
+        #"src/Section 2.2/Exercise 4/main.cpp"
         #"src/Section 2.3/Exercise 1/main.cpp"
         #"src/Section 2.3/Exercise 2/main.cpp"
-        #"src/Section 2.3/Exercise 3/main.cpp"
+        #"src/Section 2.3/Exercise 4/main.cpp"
         #"src/Section 2.3/Exercise 4/main.cpp"
         #"src/Section 2.4/Exercise 1/main.cpp"
         #"src/Section 2.4/Exercise 2/main.cpp"
         #"src/Section 2.4/Exercise 2/C1.hpp"
         #"src/Section 2.4/Exercise 2/C2.hpp"
         #"src/Section 2.4/Exercise 2/Point1.hpp"
-        "src/Section 2.4/Exercise 3/Base.hpp"
-        "src/Section 2.4/Exercise 3/main.cpp" "src/Section 2.4/Exercise 3/Derived.hpp")
+        #"src/Section 2.4/Exercise 4/Base.hpp"
+        #"src/Section 2.4/Exercise 4/main.cpp"
+        #"src/Section 2.4/Exercise 4/Derived.hpp"
+        "src/Section 2.4/Exercise 3/main.cpp")
