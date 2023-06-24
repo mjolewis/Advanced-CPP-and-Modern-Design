@@ -58,7 +58,7 @@ int main()
         }
         catch (const std::exception& e)
         {
-            std::cout << "Error: Unable to open file" << e.what() << std::endl;
+            std::cerr << "Error: Unable to open file" << e.what() << std::endl;
         }
     }
 
@@ -84,7 +84,7 @@ int main()
         }
         catch (const std::exception& e)
         {
-            std::cout << "Error: Unable to open file" << e.what() << std::endl;
+            std::cerr << "Error: Unable to open file" << e.what() << std::endl;
         }
     }
 
@@ -97,7 +97,7 @@ int main()
         }
         catch (const std::exception& e)
         {
-            std::cout << "Error: Unable to open file" << e.what() << std::endl;
+            std::cerr << "Error: Unable to open file" << e.what() << std::endl;
         }
     }
 
@@ -117,7 +117,7 @@ int main()
             {
                 if (i == 5)
                 {
-                    throw std::invalid_argument("Dummy exception");
+                    throw std::runtime_error("Dummy exception");
                 }
                 else
                 {
@@ -130,9 +130,8 @@ int main()
             }
             catch (const std::exception& e)
             {
-                // Re-open file after file is closed by custom deleters
-                std::cout << e.what() << std::endl;
-                myFile = std::fopen("/Users/mlewis/CLionProjects/Baruch/Advanced-CPP-and-Modern-Design/Level 2/src/Section 2.4/Exercise 5/myFile.txt", "w+");
+                // Log the error on the error stream
+                std::cerr << e.what() << std::endl;
             }
         }
 
