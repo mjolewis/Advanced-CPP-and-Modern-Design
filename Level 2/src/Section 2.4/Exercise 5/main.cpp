@@ -3,7 +3,9 @@
 // that executes some code before an object goes out of scope. These can be used to clean up
 // system resources.
 //
-// NOTE - The code below uses the file access mode string "a"
+// NOTE - The code below uses the file access mode string "a+", which allows us to create a new
+// file if one doesn't exist and append to and existing file.
+//
 // Created by Michael Lewis on 6/23/23.
 //
 
