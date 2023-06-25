@@ -1,4 +1,6 @@
 //
+// Illustrate how to create portable error conditions based POSIX error codes
+//
 // Created by Michael Lewis on 6/24/23.
 //
 
