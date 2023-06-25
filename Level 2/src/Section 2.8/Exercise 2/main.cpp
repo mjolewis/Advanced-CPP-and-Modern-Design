@@ -1,4 +1,6 @@
 //
+// Illustrate binary operations on bitsets and bytes.
+//
 // Created by Michael Lewis on 6/25/23.
 //
 
