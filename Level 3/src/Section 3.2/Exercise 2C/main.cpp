@@ -1,11 +1,10 @@
 //
-// A simple illustration of how to check the thread ID of a thread while also tracking the elapsed
-// time of the program.
+// Simulate a deadlock by not calling unlock after a lock is acquired. This will cause the program to hang
+// (e.g. never terminate) because threads are competing for a shared resource that they can never
+// acquire.
 //
 // Note - Each function that calls a thread will sleep to simulate some intensive algorithm
 // such that non-atomic operations are possible for illustration purpose.
-//
-// Note - The is no thread synchronization in this sample program, so the results are non-deterministic.
 //
 // Created by Michael Lewis on 6/27/23.
 //
@@ -13,24 +12,37 @@
 #include <chrono>
 #include <iostream>
 #include <functional>
+#include <mutex>
 #include <thread>
 
 // Global variable used to illustrate a race condition
 int globalCount = 0;
 
-// A shared interface used to print data from various competing threads to illustrate a race condition
-void Iprint(const std::string& s, int count)
+// Create a mutex around the console
+std::mutex console;
+
+// A shared interface used to print data from various competing threads to illustrate arace condition
+bool Iprint(const std::string& s, int count, int iterations, int failAttempts)
 {
-    std::cout << s << ": ThreadId: " << std::this_thread::get_id() << ": Count: " << count << std::endl;
+    if (!console.try_lock()) return false;
+
+    for (int i = 0; i < iterations; ++i)
+    {
+        std::cout << s << ": ThreadId: " << std::this_thread::get_id()
+                  << ": Count: " << count << " : Failed to acquire lock:" << failAttempts << " times." << std::endl;
+    }
+//    console.unlock(); Will cause deadlock
+    return true;
 }
 
 // A global function that will call the shared IPrint interface from a thread
 void globalFunction(int iterations)
 {
-    for (int i = 0; i < iterations; ++i)
+    int failAttempts = 0;
+    while (!Iprint("Global Function", ++globalCount, iterations, failAttempts))
     {
-        Iprint("Global Function", ++globalCount);
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        ++failAttempts;
+        Iprint("Global Function", ++globalCount, iterations, failAttempts);
     }
 }
 
@@ -46,10 +58,12 @@ public:
     // Called by the thread
     void operator()() const
     {
-        for (int i = 0; i < iterations; ++i)
+        int failAttempts = 0;
+        while (true)
         {
-            Iprint("Function Object", ++globalCount);
-            std::this_thread::sleep_for(std::chrono::milliseconds(10));
+            bool isAcquired = Iprint("Function Object", ++globalCount, iterations, failAttempts);
+            if (isAcquired) break;
+            else ++failAttempts;
         }
     }
 };
@@ -61,20 +75,24 @@ public:
     // Called by the thread
     static void StaticFunction(int iterations)
     {
-        for (int i = 0; i < iterations; ++i)
+        int failAttempts = 0;
+        while(true)
         {
-            Iprint("Static Function", ++globalCount);
-            std::this_thread::sleep_for(std::chrono::milliseconds(10));
+            bool isAcquired = Iprint("Static Function", ++globalCount, iterations, failAttempts);
+            if (isAcquired) break;
+            else ++failAttempts;
         }
     }
 };
 
 // A stored lambda function that will call the shared IPrint interface from a thread
 auto storedLambda = [](int iterations) -> void {
-    for (int i = 0; i < iterations; ++i)
+    int failAttempts = 0;
+    while(true)
     {
-        Iprint("Stored Lambda", ++globalCount);
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        bool isAcquired = Iprint("Stored Lambda", ++globalCount, iterations, failAttempts);
+        if (isAcquired) break;
+        else ++failAttempts;
     }
 };
 
@@ -84,10 +102,12 @@ class BindClass
 public:
     static void print(const std::string& s, int iterations)
     {
-        for (int i = 0; i < iterations; ++i)
+        int failAttempts = 0;
+        while (!Iprint(s, ++globalCount, iterations, failAttempts))
         {
-            Iprint(s, ++globalCount);
-            std::this_thread::sleep_for(std::chrono::milliseconds(10));
+            bool isAcquired = Iprint(s, ++globalCount, iterations, failAttempts);
+            if (isAcquired) break;
+            else ++failAttempts;
         }
     }
 };
@@ -109,10 +129,12 @@ int main()
     std::thread t4(bindFunction, std::string("Bind Function"), iterations);
     std::thread t5(storedLambda, iterations);
     std::thread t6([&]() -> void {
-        for (int i = 0; i < iterations; ++i)
+        int failAttempts;
+        while (true)
         {
-            Iprint("Temporary Lambda", ++globalCount);
-            std::this_thread::sleep_for((std::chrono::milliseconds(5)));
+            bool isAcquired = Iprint("Temporary Lambda", ++globalCount, iterations, failAttempts);
+            if (isAcquired) break;
+            else ++failAttempts;
         }
     });
 

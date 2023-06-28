@@ -13,6 +13,9 @@
 #include <mutex>
 #include <thread>
 
+// Global variable used to illustrate a race condition
+int globalCount = 0;
+
 // Create a mutex around the console
 std::mutex console;
 
@@ -20,18 +23,18 @@ std::mutex console;
 void Iprint(const std::string& s, int count)
 {
     console.lock();
-    for (int i = 0; i < count; ++i)
-    {
-        std::cout << s << ": ThreadId: " << std::this_thread::get_id() << " : Iteration: " << i << std::endl;
-    }
+    std::cout << s << ": ThreadId: " << std::this_thread::get_id() << ": Count: " << count << std::endl;
     console.unlock();
 }
 
 // A global function that will call the shared IPrint interface from a thread
 void globalFunction(int iterations)
 {
-    Iprint("Global Function", iterations);
-    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    for (int i = 0; i < iterations; ++i)
+    {
+        Iprint("Global Function", ++globalCount);
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    }
 }
 
 // A function object that will call the shared IPrint interface from a thread
@@ -46,8 +49,11 @@ public:
     // Called by the thread
     void operator()() const
     {
-        Iprint("Function Object", iterations);
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        for (int i = 0; i < iterations; ++i)
+        {
+            Iprint("Function Object", ++globalCount);
+            std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        }
     }
 };
 
@@ -58,15 +64,21 @@ public:
     // Called by the thread
     static void StaticFunction(int iterations)
     {
-        Iprint("Static Function", iterations);
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        for (int i = 0; i < iterations; ++i)
+        {
+            Iprint("Static Function", ++globalCount);
+            std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        }
     }
 };
 
 // A stored lambda function that will call the shared IPrint interface from a thread
 auto storedLambda = [](int iterations) -> void {
-    Iprint("Stored Lambda", iterations);
-    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    for (int i = 0; i < iterations; ++i)
+    {
+        Iprint("Stored Lambda", ++globalCount);
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    }
 };
 
 // A class with a function that gets bounded using std::bind
@@ -75,8 +87,11 @@ class BindClass
 public:
     static void print(const std::string& s, int iterations)
     {
-        Iprint(s, iterations);
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        for (int i = 0; i < iterations; ++i)
+        {
+            Iprint(s, ++globalCount);
+            std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        }
     }
 };
 
@@ -97,8 +112,11 @@ int main()
     std::thread t4(bindFunction, std::string("Bind Function"), iterations);
     std::thread t5(storedLambda, iterations);
     std::thread t6([&]() -> void {
-        Iprint("Temporary Lambda", iterations);
-        std::this_thread::sleep_for((std::chrono::milliseconds(5)));
+        for (int i = 0; i < iterations; ++i)
+        {
+            Iprint("Temporary Lambda", ++globalCount);
+            std::this_thread::sleep_for((std::chrono::milliseconds(5)));
+        }
     });
 
     // Joinable identifies A thread that has finished executing code but has not yet been joined.
@@ -122,7 +140,7 @@ int main()
     }
     catch (const std::system_error& e)
     {
-        std::cout << e.what() << std::endl;
+        std::cerr << e.what() << std::endl;
     }
 
     // Stop the clock

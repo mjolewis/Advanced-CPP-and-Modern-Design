@@ -130,7 +130,7 @@ int main()
     }
     catch (const std::system_error& e)
     {
-        std::cout << e.what() << std::endl;
+        std::cerr << e.what() << std::endl;
     }
 
     return 0;
