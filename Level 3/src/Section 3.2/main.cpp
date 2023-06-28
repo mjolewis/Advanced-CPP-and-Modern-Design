@@ -1,11 +1,8 @@
 //
-// A simple illustration of how to check the thread ID of a thread while also tracking the elapsed
-// time of the program.
+// A simple illustration of how to control thread execution by synchronizing access to shared resources
 //
 // Note - Each function that calls a thread will sleep to simulate some intensive algorithm
 // such that non-atomic operations are possible for illustration purpose.
-//
-// Note - The is no thread synchronization in this sample program, so the results are non-deterministic.
 //
 // Created by Michael Lewis on 6/27/23.
 //
@@ -13,25 +10,28 @@
 #include <chrono>
 #include <iostream>
 #include <functional>
+#include <mutex>
 #include <thread>
 
-// Global variable used to illustrate a race condition
-int globalCount = 0;
+// Create a mutex around the console
+std::mutex console;
 
-// A shared interface used to print data from various competing threads to illustrate a race condition
+// A shared interface used to print data from various competing threads to illustrate arace condition
 void Iprint(const std::string& s, int count)
 {
-    std::cout << s << ": ThreadId: " << std::this_thread::get_id() << ": Count: " << count << std::endl;
+    console.lock();
+    for (int i = 0; i < count; ++i)
+    {
+        std::cout << s << ": ThreadId: " << std::this_thread::get_id() << " : Iteration: " << i << std::endl;
+    }
+    console.unlock();
 }
 
 // A global function that will call the shared IPrint interface from a thread
 void globalFunction(int iterations)
 {
-    for (int i = 0; i < iterations; ++i)
-    {
-        Iprint("Global Function", ++globalCount);
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    }
+    Iprint("Global Function", iterations);
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
 }
 
 // A function object that will call the shared IPrint interface from a thread
@@ -46,11 +46,8 @@ public:
     // Called by the thread
     void operator()() const
     {
-        for (int i = 0; i < iterations; ++i)
-        {
-            Iprint("Function Object", ++globalCount);
-            std::this_thread::sleep_for(std::chrono::milliseconds(10));
-        }
+        Iprint("Function Object", iterations);
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
 };
 
@@ -61,21 +58,15 @@ public:
     // Called by the thread
     static void StaticFunction(int iterations)
     {
-        for (int i = 0; i < iterations; ++i)
-        {
-            Iprint("Static Function", ++globalCount);
-            std::this_thread::sleep_for(std::chrono::milliseconds(10));
-        }
+        Iprint("Static Function", iterations);
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
 };
 
 // A stored lambda function that will call the shared IPrint interface from a thread
 auto storedLambda = [](int iterations) -> void {
-    for (int i = 0; i < iterations; ++i)
-    {
-        Iprint("Stored Lambda", ++globalCount);
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    }
+    Iprint("Stored Lambda", iterations);
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
 };
 
 // A class with a function that gets bounded using std::bind
@@ -84,11 +75,8 @@ class BindClass
 public:
     static void print(const std::string& s, int iterations)
     {
-        for (int i = 0; i < iterations; ++i)
-        {
-            Iprint(s, ++globalCount);
-            std::this_thread::sleep_for(std::chrono::milliseconds(10));
-        }
+        Iprint(s, iterations);
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
 };
 
@@ -109,11 +97,8 @@ int main()
     std::thread t4(bindFunction, std::string("Bind Function"), iterations);
     std::thread t5(storedLambda, iterations);
     std::thread t6([&]() -> void {
-        for (int i = 0; i < iterations; ++i)
-        {
-            Iprint("Temporary Lambda", ++globalCount);
-            std::this_thread::sleep_for((std::chrono::milliseconds(5)));
-        }
+        Iprint("Temporary Lambda", iterations);
+        std::this_thread::sleep_for((std::chrono::milliseconds(5)));
     });
 
     // Joinable identifies A thread that has finished executing code but has not yet been joined.
