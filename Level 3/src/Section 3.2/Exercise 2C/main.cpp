@@ -3,9 +3,6 @@
 // (e.g. never terminate) because threads are competing for a shared resource that they can never
 // acquire.
 //
-// Note - Each function that calls a thread will sleep to simulate some intensive algorithm
-// such that non-atomic operations are possible for illustration purpose.
-//
 // Created by Michael Lewis on 6/27/23.
 //
 
@@ -21,28 +18,30 @@ int globalCount = 0;
 // Create a mutex around the console
 std::mutex console;
 
-// A shared interface used to print data from various competing threads to illustrate arace condition
-bool Iprint(const std::string& s, int count, int iterations, int failAttempts)
+// A shared interface used to print data from various competing threads to illustrate a race condition
+void Iprint(const std::string& s, int count, int failAttempts)
 {
-    if (!console.try_lock()) return false;
-
-    for (int i = 0; i < iterations; ++i)
-    {
-        std::cout << s << ": ThreadId: " << std::this_thread::get_id()
-                  << ": Count: " << count << " : Failed to acquire lock:" << failAttempts << " times." << std::endl;
-    }
-//    console.unlock(); Will cause deadlock
-    return true;
+    std::cout << s << ": ThreadId: " << std::this_thread::get_id()<< ": Count: " << count << " : Failed to acquire lock:" << failAttempts << " times." << std::endl;
 }
 
 // A global function that will call the shared IPrint interface from a thread
 void globalFunction(int iterations)
 {
+    int i = 0;
     int failAttempts = 0;
-    while (!Iprint("Global Function", ++globalCount, iterations, failAttempts))
+    while (i < iterations)
     {
-        ++failAttempts;
-        Iprint("Global Function", ++globalCount, iterations, failAttempts);
+        if (console.try_lock())
+        {
+            ++i;
+            ++globalCount;
+            Iprint("Global Function", globalCount, failAttempts);
+//            console.unlock(); Generate a deadlock
+        }
+        else
+        {
+            ++failAttempts;
+        }
     }
 }
 
@@ -58,12 +57,21 @@ public:
     // Called by the thread
     void operator()() const
     {
+        int i = 0;
         int failAttempts = 0;
-        while (true)
+        while (i < iterations)
         {
-            bool isAcquired = Iprint("Function Object", ++globalCount, iterations, failAttempts);
-            if (isAcquired) break;
-            else ++failAttempts;
+            if (console.try_lock())
+            {
+                ++i;
+                ++globalCount;
+                Iprint("Function Object", globalCount, failAttempts);
+//            console.unlock(); Generate a deadlock
+            }
+            else
+            {
+                ++failAttempts;
+            }
         }
     }
 };
@@ -75,24 +83,42 @@ public:
     // Called by the thread
     static void StaticFunction(int iterations)
     {
+        int i = 0;
         int failAttempts = 0;
-        while(true)
+        while(i < iterations)
         {
-            bool isAcquired = Iprint("Static Function", ++globalCount, iterations, failAttempts);
-            if (isAcquired) break;
-            else ++failAttempts;
+            if (console.try_lock())
+            {
+                ++i;
+                ++globalCount;
+                Iprint("Static Function", globalCount, failAttempts);
+//            console.unlock(); Generate a deadlock
+            }
+            else
+            {
+                ++failAttempts;
+            }
         }
     }
 };
 
 // A stored lambda function that will call the shared IPrint interface from a thread
 auto storedLambda = [](int iterations) -> void {
+    int i = 0;
     int failAttempts = 0;
-    while(true)
+    while(i < iterations)
     {
-        bool isAcquired = Iprint("Stored Lambda", ++globalCount, iterations, failAttempts);
-        if (isAcquired) break;
-        else ++failAttempts;
+        if (console.try_lock())
+        {
+            ++i;
+            ++globalCount;
+            Iprint("Stored Lambda", globalCount, failAttempts);
+//            console.unlock(); Generate a deadlock
+        }
+        else
+        {
+            ++failAttempts;
+        }
     }
 };
 
@@ -102,12 +128,21 @@ class BindClass
 public:
     static void print(const std::string& s, int iterations)
     {
+        int i = 0;
         int failAttempts = 0;
-        while (!Iprint(s, ++globalCount, iterations, failAttempts))
+        while (i < iterations)
         {
-            bool isAcquired = Iprint(s, ++globalCount, iterations, failAttempts);
-            if (isAcquired) break;
-            else ++failAttempts;
+            if (console.try_lock())
+            {
+                ++i;
+                ++globalCount;
+                Iprint(s, globalCount, failAttempts);
+//            console.unlock(); Generate a deadlock
+            }
+            else
+            {
+                ++failAttempts;
+            }
         }
     }
 };
@@ -129,12 +164,21 @@ int main()
     std::thread t4(bindFunction, std::string("Bind Function"), iterations);
     std::thread t5(storedLambda, iterations);
     std::thread t6([&]() -> void {
-        int failAttempts;
-        while (true)
+        int i = 0;
+        int failAttempts = 0;
+        while (i < iterations)
         {
-            bool isAcquired = Iprint("Temporary Lambda", ++globalCount, iterations, failAttempts);
-            if (isAcquired) break;
-            else ++failAttempts;
+            if (console.try_lock())
+            {
+                ++i;
+                ++globalCount;
+                Iprint("Temporary Lambda", globalCount, failAttempts);
+//            console.unlock(); Generate a deadlock
+            }
+            else
+            {
+                ++failAttempts;
+            }
         }
     });
 

@@ -1,7 +1,8 @@
 //
-// After illustrating std::mutex with lock and unlock, I will illustrate how to use a trylock to
-// control thread execution by synchronizing access to shared resources.
-// A trylock will attempt to acquire the lock and return immediately if it cannot.
+// Illustrate std::lock_guard, which is a mutex wrapper that provides a convenient
+// RAII-style mechanism for owning a mutex or several mutexes (since C++17) for the duration of a scoped block.
+//
+// NOTE - Calling lock will block until the lock can be acquired.
 //
 // Created by Michael Lewis on 6/27/23.
 //
@@ -19,29 +20,18 @@ int globalCount = 0;
 std::mutex console;
 
 // A shared interface used to print data from various competing threads to illustrate a race condition
-void Iprint(const std::string& s, int count, int failAttempts)
+void Iprint(const std::string& s, int count)
 {
-    std::cout << s << ": ThreadId: " << std::this_thread::get_id()<< ": Count: " << count << " : Failed to acquire lock:" << failAttempts << " times." << std::endl;
+    std::cout << s << ": ThreadId: " << std::this_thread::get_id()<< ": Count: " << count << std::endl;
 }
 
 // A global function that will call the shared IPrint interface from a thread
 void globalFunction(int iterations)
 {
-    int i = 0;
-    int failAttempts = 0;
-    while (i < iterations)
+    for (int i = 0; i < iterations; ++i)
     {
-        if (console.try_lock())
-        {
-            ++i;
-            ++globalCount;
-            Iprint("Global Function", globalCount, failAttempts);
-            console.unlock();
-        }
-        else
-        {
-            ++failAttempts;
-        }
+        const std::lock_guard<std::mutex> lock{console};  // Automatically unlocked when it goes out of scope
+        Iprint("Global Function", ++globalCount);
     }
 }
 
@@ -57,21 +47,10 @@ public:
     // Called by the thread
     void operator()() const
     {
-        int i = 0;
-        int failAttempts = 0;
-        while (i < iterations)
+        for (int i = 0; i < iterations; ++i)
         {
-            if (console.try_lock())
-            {
-                ++i;
-                ++globalCount;
-                Iprint("Function Object", globalCount, failAttempts);
-                console.unlock();
-            }
-            else
-            {
-                ++failAttempts;
-            }
+            const std::lock_guard<std::mutex> lock{console};  // Automatically unlocked when it goes out of scope
+            Iprint("Function Object", ++globalCount);
         }
     }
 };
@@ -83,42 +62,20 @@ public:
     // Called by the thread
     static void StaticFunction(int iterations)
     {
-        int i = 0;
-        int failAttempts = 0;
-        while(i < iterations)
+        for (int i = 0; i < iterations; ++i)
         {
-            if (console.try_lock())
-            {
-                ++i;
-                ++globalCount;
-                Iprint("Static Function", globalCount, failAttempts);
-                console.unlock();
-            }
-            else
-            {
-                ++failAttempts;
-            }
+            const std::lock_guard<std::mutex> lock{console};  // Automatically unlocked when it goes out of scope
+            Iprint("Static Function", ++globalCount);
         }
     }
 };
 
 // A stored lambda function that will call the shared IPrint interface from a thread
 auto storedLambda = [](int iterations) -> void {
-    int i = 0;
-    int failAttempts = 0;
-    while(i < iterations)
+    for (int i = 0; i < iterations; ++i)
     {
-        if (console.try_lock())
-        {
-            ++i;
-            ++globalCount;
-            Iprint("Stored Lambda", globalCount, failAttempts);
-            console.unlock();
-        }
-        else
-        {
-            ++failAttempts;
-        }
+        const std::lock_guard<std::mutex> lock{console};  // Automatically unlocked when it goes out of scope
+        Iprint("Stored Lambda", ++globalCount);
     }
 };
 
@@ -128,21 +85,10 @@ class BindClass
 public:
     static void print(const std::string& s, int iterations)
     {
-        int i = 0;
-        int failAttempts = 0;
-        while (i < iterations)
+        for (int i = 0; i < iterations; ++i)
         {
-            if (console.try_lock())
-            {
-                ++i;
-                ++globalCount;
-                Iprint(s, globalCount, failAttempts);
-                console.unlock();
-            }
-            else
-            {
-                ++failAttempts;
-            }
+            const std::lock_guard<std::mutex> lock{console};  // Automatically unlocked when it goes out of scope
+            Iprint(s, ++globalCount);
         }
     }
 };
@@ -164,21 +110,10 @@ int main()
     std::thread t4(bindFunction, std::string("Bind Function"), iterations);
     std::thread t5(storedLambda, iterations);
     std::thread t6([&]() -> void {
-        int i = 0;
-        int failAttempts = 0;
-        while (i < iterations)
+        for (int i = 0; i < iterations; ++i)
         {
-            if (console.try_lock())
-            {
-                ++i;
-                ++globalCount;
-                Iprint("Temporary Lambda", globalCount, failAttempts);
-                console.unlock();
-            }
-            else
-            {
-                ++failAttempts;
-            }
+            const std::lock_guard<std::mutex> lock{console};  // Automatically unlocked when it goes out of scope
+            Iprint("Temporary Lambda", ++globalCount);
         }
     });
 

@@ -1,7 +1,7 @@
 //
-// After illustrating std::mutex with lock and unlock, I will illustrate how to use a trylock to
-// control thread execution by synchronizing access to shared resources.
-// A trylock will attempt to acquire the lock and return immediately if it cannot.
+// Illustrate the functionality of std::unique_lock, which is a general-purpose mutex
+// ownership wrapper allowing deferred locking, time-constrained attempts at locking,
+// recursive locking, transfer of lock ownership, and use with condition variable.
 //
 // Created by Michael Lewis on 6/27/23.
 //
@@ -11,6 +11,7 @@
 #include <functional>
 #include <mutex>
 #include <thread>
+#include <system_error>
 
 // Global variable used to illustrate a race condition
 int globalCount = 0;
@@ -19,28 +20,24 @@ int globalCount = 0;
 std::mutex console;
 
 // A shared interface used to print data from various competing threads to illustrate a race condition
-void Iprint(const std::string& s, int count, int failAttempts)
+void Iprint(const std::string& s, int count)
 {
-    std::cout << s << ": ThreadId: " << std::this_thread::get_id()<< ": Count: " << count << " : Failed to acquire lock:" << failAttempts << " times." << std::endl;
+    std::cout << s << ": ThreadId: " << std::this_thread::get_id()<< ": Count: " << count << std::endl;
 }
 
 // A global function that will call the shared IPrint interface from a thread
 void globalFunction(int iterations)
 {
     int i = 0;
-    int failAttempts = 0;
     while (i < iterations)
     {
+        // defer locking until calling try_lock. This allows the lock to be non-blocking
+        std::unique_lock<std::mutex> lock{console, std::defer_lock};
         if (console.try_lock())
         {
             ++i;
-            ++globalCount;
-            Iprint("Global Function", globalCount, failAttempts);
+            Iprint("Global Function", ++globalCount);
             console.unlock();
-        }
-        else
-        {
-            ++failAttempts;
         }
     }
 }
@@ -58,19 +55,15 @@ public:
     void operator()() const
     {
         int i = 0;
-        int failAttempts = 0;
         while (i < iterations)
         {
+            // defer locking until calling try_lock. This allows the lock to be non-blocking
+            std::unique_lock<std::mutex> lock{console, std::defer_lock};
             if (console.try_lock())
             {
                 ++i;
-                ++globalCount;
-                Iprint("Function Object", globalCount, failAttempts);
+                Iprint("Function Object", ++globalCount);
                 console.unlock();
-            }
-            else
-            {
-                ++failAttempts;
             }
         }
     }
@@ -84,19 +77,15 @@ public:
     static void StaticFunction(int iterations)
     {
         int i = 0;
-        int failAttempts = 0;
-        while(i < iterations)
+        while (i < iterations)
         {
+            // defer locking until calling try_lock. This allows the lock to be non-blocking
+            std::unique_lock<std::mutex> lock{console, std::defer_lock};
             if (console.try_lock())
             {
                 ++i;
-                ++globalCount;
-                Iprint("Static Function", globalCount, failAttempts);
+                Iprint("Static Function", ++globalCount);
                 console.unlock();
-            }
-            else
-            {
-                ++failAttempts;
             }
         }
     }
@@ -105,19 +94,15 @@ public:
 // A stored lambda function that will call the shared IPrint interface from a thread
 auto storedLambda = [](int iterations) -> void {
     int i = 0;
-    int failAttempts = 0;
-    while(i < iterations)
+    while (i < iterations)
     {
+        // defer locking until calling try_lock. This allows the lock to be non-blocking
+        std::unique_lock<std::mutex> lock{console, std::defer_lock};
         if (console.try_lock())
         {
             ++i;
-            ++globalCount;
-            Iprint("Stored Lambda", globalCount, failAttempts);
+            Iprint("Stored Lambda", ++globalCount);
             console.unlock();
-        }
-        else
-        {
-            ++failAttempts;
         }
     }
 };
@@ -129,19 +114,28 @@ public:
     static void print(const std::string& s, int iterations)
     {
         int i = 0;
-        int failAttempts = 0;
         while (i < iterations)
         {
-            if (console.try_lock())
+            try
             {
-                ++i;
-                ++globalCount;
-                Iprint(s, globalCount, failAttempts);
-                console.unlock();
+                // defer locking until calling try_lock. This allows the lock to be non-blocking
+                std::unique_lock<std::mutex> lock{console, std::defer_lock};
+                if (console.try_lock())
+                {
+                    ++i;
+                    Iprint(s, ++globalCount);
+                    console.unlock();
+                }
+                else
+                {
+                    // Simulate an exception per the conversation that occurred in this thread
+                    // https://quantnet.com/threads/3-1-3-c-lock-an-associated-mutex-without-locking.47242/post-320636
+                    throw std::system_error(make_error_code(std::errc::operation_in_progress), "Simulated error");
+                }
             }
-            else
+            catch (const std::system_error& e)
             {
-                ++failAttempts;
+                std::cerr << e.what() << ":" << e.what() << std::endl;
             }
         }
     }
@@ -164,21 +158,19 @@ int main()
     std::thread t4(bindFunction, std::string("Bind Function"), iterations);
     std::thread t5(storedLambda, iterations);
     std::thread t6([&]() -> void {
-        int i = 0;
-        int failAttempts = 0;
-        while (i < iterations)
+        // Use a std::unique_lock with no associated mutex, to simulate an exception
+        std::unique_lock<std::mutex> lock{};
+        try
         {
-            if (console.try_lock())
+            if (lock.try_lock())
             {
-                ++i;
-                ++globalCount;
-                Iprint("Temporary Lambda", globalCount, failAttempts);
-                console.unlock();
+                Iprint("Temporary Lambda", ++globalCount);
+                lock.unlock();
             }
-            else
-            {
-                ++failAttempts;
-            }
+        }
+        catch (const std::system_error& e)
+        {
+            std::cerr << e.what() << std::endl;
         }
     });
 
