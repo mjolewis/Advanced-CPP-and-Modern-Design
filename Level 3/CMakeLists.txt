@@ -28,11 +28,11 @@ add_executable(Advanced_CPP_and_Modern_Design
         #"src/Section 3.1/Exercise 3.1.3E/main.cpp"
         #"src/Section 3.1/Exercise 3.1.3F/main.cpp"
         #"src/Section 3.1/Exercise 3.1.3G/main.cpp"
-        #"src/Section 3.1/Exercise 3.1.4/main.cpp"
-        #"src/Section 3.1/Exercise 3.1.4/ConcurrentQueue.cpp"
-        #"src/Section 3.1/Exercise 3.1.4/ConcurrentQueue.hpp"
-        #"src/Section 3.1/Exercise 3.1.4/Producer.cpp"
-        #"src/Section 3.1/Exercise 3.1.4/Producer.hpp"
-        #"src/Section 3.1/Exercise 3.1.4/Consumer.cpp"
-        #"src/Section 3.1/Exercise 3.1.4/Consumer.hpp"
-        "src/Section 3.1/Exercise 3.1.5/main.cpp")
+        "src/Section 3.1/Exercise 3.1.4/main.cpp"
+        "src/Section 3.1/Exercise 3.1.4/ConcurrentQueue.cpp"
+        "src/Section 3.1/Exercise 3.1.4/ConcurrentQueue.hpp"
+        "src/Section 3.1/Exercise 3.1.4/Producer.cpp"
+        "src/Section 3.1/Exercise 3.1.4/Producer.hpp"
+        "src/Section 3.1/Exercise 3.1.4/Consumer.cpp"
+        "src/Section 3.1/Exercise 3.1.4/Consumer.hpp")
+        #"src/Section 3.1/Exercise 3.1.5/main.cpp")

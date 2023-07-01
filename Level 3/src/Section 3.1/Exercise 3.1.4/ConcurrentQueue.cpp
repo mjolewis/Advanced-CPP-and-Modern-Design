@@ -108,7 +108,7 @@ template<typename T>
 void ConcurrentQueue<T>::setInterrupt(bool value)
 {
     std::lock_guard<std::mutex> lock(mutex);
-    interrupt = value;
+    interrupt.store(value);
 }
 
 /**
