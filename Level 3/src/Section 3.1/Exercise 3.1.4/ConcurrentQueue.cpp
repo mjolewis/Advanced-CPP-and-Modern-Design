@@ -86,7 +86,6 @@ T ConcurrentQueue<T>::dequeue()
     }
 
     // Remove the element from the front of the queue and return it.
-    // Handled cases where the queue may be empty at time of interrupt.
     if (!queue.empty())
     {
         T result = queue.front();
@@ -94,6 +93,7 @@ T ConcurrentQueue<T>::dequeue()
         return result;
     }
 
+    // Handles case where the queue may be empty at time of interrupt.
     return "SCHEDULE_ID_DROP";
 
     // The lock_guard is destructed and the mutex is released when the scope ends
