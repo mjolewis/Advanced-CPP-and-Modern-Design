@@ -71,7 +71,7 @@ T ConcurrentQueue<T>::dequeue()
     // Only try to consume data if there is any data. cv.wait atomically unlocks lock, blocks the current
     // executing thread, and adds it to the list of threads waiting on *this. The thread will be
     // unblocked when notify_all() or notify_one() is executed (typically done when data is enqueued)
-    while (queue.size() == 0 && !interrupt)
+    while (queue.empty() && !interrupt)
     {
         try
         {
@@ -86,9 +86,14 @@ T ConcurrentQueue<T>::dequeue()
     }
 
     // Remove the element from the front of the queue and return it.
-    T result = queue.front();
-    queue.pop();
-    return result;
+    if (!queue.empty())
+    {
+        T result = queue.front();
+        queue.pop();
+        return result;
+    }
+
+    return "SCHEDULE_ID_DROP";
 
     // The lock_guard is destructed and the mutex is released when the scope ends
 }

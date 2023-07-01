@@ -33,7 +33,7 @@ void Consumer::operator()()
     {
         // Print the data to the console
         std::string msg = queue->dequeue();
-        if (!msg.empty())
+        if (msg != "SCHEDULE_ID_DROP")
         {
             std::cout << "Consumer_ThreadID:" << std::to_string(threadId) << " - Consuming " << msg << std::endl;
         }
