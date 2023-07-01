@@ -9,6 +9,7 @@
 #include <memory>
 #include <type_traits>
 
+// Example struct provide by lecture material
 struct X
 {
     double val;

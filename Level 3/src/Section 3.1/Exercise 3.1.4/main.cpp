@@ -24,14 +24,14 @@ int main()
     // to make it easier to identify which thread is producing
     for (int i = 0; i < NUM_THREADS; ++i)
     {
-        producerThreads[i] = std::thread(Producer{Producer {i, queue}});
+        producerThreads[i] = std::thread(Producer{i, queue});
     }
 
     // Create consumers - Note, threadId are purposely set to an integer value instead of std::this_thread::id
     // to make it easier to identify which thread is consuming
     for (int i = 0; i < NUM_THREADS; ++i)
     {
-        consumerThreads[i] = std::thread(Consumer {Consumer {i, queue}});
+        consumerThreads[i] = std::thread(Consumer{i, queue});
     }
 
     // Wait for signal before joining thread
