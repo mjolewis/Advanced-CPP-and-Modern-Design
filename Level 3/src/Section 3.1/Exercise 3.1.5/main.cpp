@@ -23,7 +23,9 @@ int main()
     assert(atomic_is_lock_free(&i));
 
     // Part C - Atomically replace the value of one atomic object by another atomic object.
-    b.exchange(false);
+    // Note, you can use b.store if you don't need to capture the old value.
+    auto result = b.exchange(false);
+    assert(true == result);
     assert(false == b.load());
 
     // Part D - Atomically load an atomic object and return its current value.
