@@ -25,13 +25,13 @@ private:
 public:
     Consumer() = delete;
     explicit Consumer(int threadId, std::shared_ptr<ConcurrentQueue<std::string>> queue);
-    Consumer(const Consumer& source) = default;
+    Consumer(const Consumer& source) = delete;
     Consumer(Consumer&& source) noexcept = default;
     ~Consumer() = default;
 
     // Operator overloads
-    Consumer& operator=(const Consumer& source) = default;
-    Consumer& operator=(Consumer&& source) noexcept = default;
+    Consumer& operator=(const Consumer& source) = delete;
+    Consumer& operator=(Consumer&& source) noexcept = delete;
     void operator()();
 };
 

@@ -30,13 +30,13 @@ private:
 
 public:
     ConcurrentQueue();
-    ConcurrentQueue(const ConcurrentQueue<T>& source) = default;
-    ConcurrentQueue(ConcurrentQueue<T>&& source) noexcept = default;
+    ConcurrentQueue(const ConcurrentQueue<T>& source) = delete;
+    ConcurrentQueue(ConcurrentQueue<T>&& source) noexcept = delete;
     ~ConcurrentQueue();
 
     // Operator overloads
-    ConcurrentQueue& operator=(const ConcurrentQueue<T>& source) = default;
-    ConcurrentQueue& operator=(ConcurrentQueue<T>&& source) noexcept = default;
+    ConcurrentQueue& operator=(const ConcurrentQueue<T>& source) = delete;
+    ConcurrentQueue& operator=(ConcurrentQueue<T>&& source) noexcept = delete;
 
     // Core functionality
     void enqueue(const T& data);

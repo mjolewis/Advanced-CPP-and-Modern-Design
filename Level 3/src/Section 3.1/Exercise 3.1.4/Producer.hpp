@@ -25,13 +25,13 @@ private:
 public:
     Producer() = delete;
     explicit Producer(int threadId, std::shared_ptr<ConcurrentQueue<std::string>> queue);
-    Producer(const Producer& source) = default;
+    Producer(const Producer& source) = delete;
     Producer(Producer&& source) noexcept = default;
     ~Producer() = default;
 
     // Operator overloads
-    Producer& operator=(const Producer& source) = default;
-    Producer& operator=(Producer&& source) noexcept = default;
+    Producer& operator=(const Producer& source) = delete;
+    Producer& operator=(Producer&& source) noexcept = delete;
     void operator()();
 };
 

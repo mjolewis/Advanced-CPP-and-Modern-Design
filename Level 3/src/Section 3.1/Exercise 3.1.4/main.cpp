@@ -20,13 +20,15 @@ int main()
     std::array<std::thread, NUM_THREADS> consumerThreads;
     std::shared_ptr<ConcurrentQueue<std::string>> queue(new ConcurrentQueue<std::string>{});
 
-    // Create producers
+    // Create producers - Note, threadId are purposely set to an integer value instead of std::this_thread::id
+    // to make it easier to identify which thread is producing
     for (int i = 0; i < NUM_THREADS; ++i)
     {
         producerThreads[i] = std::thread(Producer{Producer {i, queue}});
     }
 
-    // Create consumers
+    // Create consumers - Note, threadId are purposely set to an integer value instead of std::this_thread::id
+    // to make it easier to identify which thread is consuming
     for (int i = 0; i < NUM_THREADS; ++i)
     {
         consumerThreads[i] = std::thread(Consumer {Consumer {i, queue}});
