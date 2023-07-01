@@ -86,6 +86,7 @@ T ConcurrentQueue<T>::dequeue()
     }
 
     // Remove the element from the front of the queue and return it.
+    // Handled cases where the queue may be empty at time of interrupt.
     if (!queue.empty())
     {
         T result = queue.front();
