@@ -23,13 +23,13 @@ int main()
     // Create producers
     for (int i = 0; i < NUM_THREADS; ++i)
     {
-        producerThreads[i] = std::thread(Producer<std::string> {Producer {i, queue}});
+        producerThreads[i] = std::thread(Producer{Producer {i, queue}});
     }
 
     // Create consumers
     for (int i = 0; i < NUM_THREADS; ++i)
     {
-        consumerThreads[i] = std::thread(Consumer<std::string> {Consumer {i, queue}});
+        consumerThreads[i] = std::thread(Consumer {Consumer {i, queue}});
     }
 
     // Wait for signal before joining thread

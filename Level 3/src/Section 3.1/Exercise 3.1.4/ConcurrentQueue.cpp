@@ -86,14 +86,9 @@ T ConcurrentQueue<T>::dequeue()
     }
 
     // Remove the element from the front of the queue and return it.
-    if (queue.size() > 0)
-    {
-        T result = queue.front();
-        queue.pop();
-        return result;
-    }
-
-    return "";
+    T result = queue.front();
+    queue.pop();
+    return result;
 
     // The lock_guard is destructed and the mutex is released when the scope ends
 }
