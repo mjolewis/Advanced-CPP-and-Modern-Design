@@ -37,4 +37,7 @@ add_executable(Advanced_CPP_and_Modern_Design
         #"src/Section 3.1/Exercise 3.1.4/Consumer.hpp")
         #"src/Section 3.1/Exercise 3.1.5/main.cpp")
         #"src/Section 3.2/Exercise 1/main.cpp"
-        "src/Section 3.2/Exercise 2/main.cpp")
+        #"src/Section 3.2/Exercise 2/main.cpp"
+        "src/Section 3.2/Exercise 3/main.cpp"
+        "src/Section 3.2/Exercise 3/ActiveObject.cpp"
+        "src/Section 3.2/Exercise 3/ActiveObject.hpp")
