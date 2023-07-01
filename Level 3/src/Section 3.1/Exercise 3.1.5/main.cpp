@@ -12,9 +12,10 @@
 int main()
 {
     // Part A - Create atomic objects of type long long, bool and int.
-    std::atomic<long long> l{8ll};
-    std::atomic<bool> b{true};
-    std::atomic<int> i{7};
+    // Note the use of C++ 11 type aliases (e.g. replaces std::atomic<long long>, std::atomic<bool>, std::atomic<int>)
+    std::atomic_llong l{8ll};
+    std::atomic_bool b{true};
+    std::atomic_int i{7};
 
     // Part B - Check if the atomic TYPES are lock free
     assert(atomic_is_lock_free(&l));
