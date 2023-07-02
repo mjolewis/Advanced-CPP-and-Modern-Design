@@ -1,5 +1,5 @@
 //
-// An exemplar class that consumes data from a ConcurrentQueue. The ConcurrentQueue is wrapped in a
+// An exemplar class that consumes Customers from a ConcurrentQueue. The ConcurrentQueue is wrapped in a
 // std::shared_ptr because it is shared between multiple producer and consumer threads that write
 // and read from the shared queue.
 //
@@ -11,34 +11,33 @@
 
 #include <memory>
 #include <iostream>
+#include <optional>
 #include <utility>
 
 #include "ConcurrentQueue.hpp"
-#include "Consumer.hpp"
+#include "Barber.hpp"
 
 /**
  * Overloaded ctor
- * @param threadId A unique Consumer identifier
  * @param queue A ConcurrentQueue to consume data from
  */
-Consumer::Consumer(int threadId, std::shared_ptr<ConcurrentQueue<std::string>> queue) : threadId{threadId}, queue{std::move(queue)} {}
+Barber::Barber(std::shared_ptr<ConcurrentQueue<std::string>> queue) : queue{std::move(queue)} {}
 
 /**
  * A thread function that consumes data from the ConcurrentQueue.
  * @Note - This is a long running process that will continually consume data.
  */
-void Consumer::operator()()
+void Barber::operator()()
 {
-    while (!queue->isInterrupted())
+    while (queue->isOpenForBusiness())
     {
         // Print the data to the console
         auto msg = queue->dequeue();
         if (msg.has_value())
         {
-            std::cout << "Consumer_ThreadID:" << std::to_string(threadId) << " - Consuming " << msg.value() << std::endl;
+            std::cout << "Barber is cutting hair for " << msg.value() << std::endl;
         }
 
-        // Make sure we can be interrupted
-        std::this_thread::yield();
+        // Only one Barber, so no need to yield to other Barber threads
     }
 }

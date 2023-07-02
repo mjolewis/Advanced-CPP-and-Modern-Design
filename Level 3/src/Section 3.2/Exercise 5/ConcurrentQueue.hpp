@@ -24,13 +24,15 @@ template<typename T>
 class ConcurrentQueue
 {
 private:
+    int numChairs;
     std::queue<T> queue;
     std::mutex mutex;
     std::condition_variable cv;
-    std::atomic<bool> interrupt;
+    std::atomic_bool openForBusiness;
 
 public:
-    ConcurrentQueue();
+    ConcurrentQueue() = delete;
+    explicit ConcurrentQueue(int numChairs);
     ConcurrentQueue(const ConcurrentQueue<T>& source) = delete;
     ConcurrentQueue(ConcurrentQueue<T>&& source) noexcept = delete;
     ~ConcurrentQueue() = default;
@@ -44,8 +46,8 @@ public:
     std::optional<T> dequeue();
 
     // Allow threads to be interrupted
-    void setInterrupt(bool value);
-    std::atomic<bool> isInterrupted();
+    void setOpenForBusiness(bool value);
+    bool isOpenForBusiness();
 };
 
 // *** Template Definitions ***

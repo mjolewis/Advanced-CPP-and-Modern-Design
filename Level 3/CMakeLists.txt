@@ -41,4 +41,11 @@ add_executable(Advanced_CPP_and_Modern_Design
         #"src/Section 3.2/Exercise 3/main.cpp"
         #"src/Section 3.2/Exercise 3/ActiveObject.cpp"
         #"src/Section 3.2/Exercise 3/ActiveObject.hpp"
-        "src/Section 3.2/Exercise 4/main.cpp")
+        #"src/Section 3.2/Exercise 4/main.cpp"
+        "src/Section 3.2/Exercise 5/main.cpp"
+        "src/Section 3.2/Exercise 5/Customer.cpp"
+        "src/Section 3.2/Exercise 5/Customer.hpp"
+        "src/Section 3.2/Exercise 5/Barber.cpp"
+        "src/Section 3.2/Exercise 5/Barber.hpp"
+        "src/Section 3.2/Exercise 5/ConcurrentQueue.cpp"
+        "src/Section 3.2/Exercise 5/ConcurrentQueue.hpp")

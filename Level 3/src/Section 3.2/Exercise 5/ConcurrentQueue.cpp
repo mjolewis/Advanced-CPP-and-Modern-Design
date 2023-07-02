@@ -16,6 +16,7 @@
 #include <atomic>
 #include <condition_variable>
 #include <iostream>
+#include <optional>
 #include <queue>
 #include <thread>
 
@@ -26,23 +27,31 @@
 using namespace std::chrono_literals;
 
 /**
- * Default ctor
- * @tparam T The data type for elements in this std::queue
+ * Overloaded ctor
+ * @tparam T The data type for Customers in this std::queue
+ * @param numChairs Max number of chairs in the waiting room
  */
 template<typename T>
-ConcurrentQueue<T>::ConcurrentQueue() : queue{}, interrupt(false)
+ConcurrentQueue<T>::ConcurrentQueue(int numChairs) : numChairs{numChairs}, queue{}, openForBusiness{true}
 {
 
 }
 
 /**
- * Inserts an element into this queue in a thread safe manner
- * @tparam T The data type for elements in this std::queue
- * @param data The element to be inserted
+ * Inserts a Customer into this queue in a thread safe manner
+ * @tparam T The data type for Customers in this std::queue
+ * @param data The Customer to be inserted
  */
 template<typename T>
 void ConcurrentQueue<T>::enqueue(const T& data)
 {
+    // Precondition that ensures the waiting room doesn't overcrowd
+    if (queue.size() >= numChairs)
+    {
+        std::cout << "*** WAITING ROOM IS FULL ***" << std::endl;
+        return;
+    }
+
     // Thread safe mechanisms
     std::lock_guard<std::mutex> lock(mutex);
     queue.push(data);
@@ -51,9 +60,9 @@ void ConcurrentQueue<T>::enqueue(const T& data)
 }
 
 /**
- * Removes the first element off this queue in a thread safe manner
- * @tparam T The data type for elements in this std::queue
- * @return The element at the front of the queue
+ * Removes the next customer from the queue in a thread safe manner
+ * @tparam T The data type for Customers in this std::queue
+ * @return The next Customer in the queue
  */
 template<typename T>
 std::optional<T> ConcurrentQueue<T>::dequeue()
@@ -65,7 +74,7 @@ std::optional<T> ConcurrentQueue<T>::dequeue()
     // Only try to consume data if there is any data. cv.wait atomically unlocks lock, blocks the current
     // executing thread, and adds it to the list of threads waiting on *this. The thread will be
     // unblocked when notify_all() or notify_one() is executed (typically done when data is enqueued)
-    while (queue.empty() && !interrupt)
+    while (queue.empty() && openForBusiness)
     {
         try
         {
@@ -79,10 +88,10 @@ std::optional<T> ConcurrentQueue<T>::dequeue()
         }
     }
 
-    // Optionally remove and return the element at the front of the queue.
+    // Optionally remove and return the Customer at the front of the queue.
     // If no customer is in the queue, return an optional empty. Based on the pre-condition
     // in the while condition above, an empty optional is only possible when the user
-    // sends a signal into the system to terminate the otherwise long-running process.
+    // sends a signal into the system to terminate the otherwise long running process.
     auto result = queue.empty() ? std::optional<T>{} : std::optional<T>{queue.front()};
     if (result.has_value()) queue.pop();
     return result;
@@ -91,27 +100,25 @@ std::optional<T> ConcurrentQueue<T>::dequeue()
 }
 
 /**
- * Allows a client to interrupt the producer and consumer threads
- * @tparam T The type of data in this ConcurrentQueue
- * @param value A boolean flag that can be used to terminate the producer and consumer threads
+ * Used to determine when the program should start or stop executing
+ * @tparam T The data type for Customers in this std::queue
+ * @param value True if the program can work, false when it should stop
  */
 template<typename T>
-void ConcurrentQueue<T>::setInterrupt(bool value)
+void ConcurrentQueue<T>::setOpenForBusiness(bool value)
 {
-    std::lock_guard<std::mutex> lock(mutex);
-    interrupt.store(value);
+    openForBusiness.store(value);
 }
 
 /**
- * Atomically obtains the value of the atomic object.
- * @tparam T The type of data in this ConcurrentQueue.
- * @return True if the Producers and Consumers should be interrupted. Otherwise false and the
- * Producers and Consumers continue working.
+ * Used to determine when the program should start or stop executing
+ * @tparam T The data type for Customers in this std::queue
+ * @return True if the program can work, false when it should stop
  */
 template<typename T>
-std::atomic<bool> ConcurrentQueue<T>::isInterrupted()
+bool ConcurrentQueue<T>::isOpenForBusiness()
 {
-    return interrupt.load();
+    return openForBusiness.load();
 }
 
 #endif
