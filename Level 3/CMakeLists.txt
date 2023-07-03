@@ -51,4 +51,5 @@ add_executable(Advanced_CPP_and_Modern_Design
         #"src/Section 3.2_3.3/Exercise 5/ConcurrentQueue.hpp"
         #"src/Section 3.4/Exercise 1/main.cpp"
         #"src/Section 3.4/Exercise 2/main.cpp"
-        "src/Section 3.4/Exercise 3/main.cpp")
+        #"src/Section 3.4/Exercise 3/main.cpp"
+        "src/Section 3.4/Exercise 4/main.cpp")
