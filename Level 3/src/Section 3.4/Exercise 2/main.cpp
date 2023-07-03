@@ -1,4 +1,6 @@
 //
+// A simple test class to illustrate core concepts of std::future
+//
 // Created by Michael Lewis on 7/2/23.
 //
 
