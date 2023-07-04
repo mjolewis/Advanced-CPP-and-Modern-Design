@@ -13,7 +13,7 @@
 #include <thread>
 #include <system_error>
 
-// 12 user-defined literals that represent hours, minutes, seconds, milliseconds, microseconds, and nanoseconds
+// 12 user-defined literals that represent hours, minutes, seconds, milliseconds, milliseconds, and nanoseconds
 // Will be used to set minimum duration to block for when attempting to acquire a lock
 using namespace std::chrono_literals;
 
@@ -224,8 +224,8 @@ int main()
     std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
 
     // Log the running time
-    auto elapsedTime = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-    std::cout << "\n*** Elapsed time: " << elapsedTime.count() << " micros ***" << std::endl;
+    auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+    std::cout << "\n*** Elapsed time: " << elapsedTime.count() << " millis ***" << std::endl;
 
     return 0;
 }
