@@ -5,6 +5,7 @@
 //
 
 #include <atomic>
+#include <cassert>
 #include <iostream>
 #include <memory>
 #include <type_traits>

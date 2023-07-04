@@ -7,6 +7,7 @@
 #include <functional>
 #include <random>
 #include <thread>
+#include <memory>
 
 // Example struct provide by lecture material
 struct X

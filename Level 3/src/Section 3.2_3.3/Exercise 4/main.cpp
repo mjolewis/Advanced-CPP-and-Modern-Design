@@ -5,6 +5,7 @@
 #include <iostream>
 #include <memory>
 #include <thread>
+#include <condition_variable>
 
 // Part A - Set up data needed to implement a simple Master Worker pattern
 // Types and data needed

@@ -4,6 +4,7 @@
 // Created by Michael Lewis on 7/2/23.
 //
 
+#include <cassert>
 #include <chrono>
 #include <future>
 #include <iostream>
