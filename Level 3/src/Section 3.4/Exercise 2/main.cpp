@@ -9,6 +9,8 @@
 #include <future>
 #include <iostream>
 
+// 12 user-defined literals that represent hours, minutes, seconds, milliseconds, milliseconds, and nanoseconds
+// Will be used to set minimum duration to block for when attempting to acquire a lock
 using namespace std::chrono_literals;
 
 // Create the following shared future by calling the appropriate constructor:
