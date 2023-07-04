@@ -32,7 +32,7 @@ public:
     void Stop() { stop = std::chrono::steady_clock::now(); }
     auto ElapsedTime()
     {
-        return std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
+        return std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
     }
 
     // Variadic function used to calculate total running time for any number of specified arguments
