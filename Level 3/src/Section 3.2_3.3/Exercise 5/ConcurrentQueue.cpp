@@ -22,7 +22,7 @@
 
 #include "ConcurrentQueue.hpp"
 
-// 12 user-defined literals that represent hours, minutes, seconds, milliseconds, microseconds, and nanoseconds
+// 12 user-defined literals that represent hours, minutes, seconds, milliseconds, milliseconds, and nanoseconds
 // Will be used to set minimum duration to block for when attempting to acquire a lock
 using namespace std::chrono_literals;
 

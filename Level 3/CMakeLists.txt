@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.23)
 project(Advanced_CPP_and_Modern_Design)
 
+#find_program(CMAKE_C_COMPILER NAMES $ENV{CC} gcc PATHS ENV PATH NO_DEFAULT_PATH)
+#find_program(CMAKE_CXX_COMPILER NAMES $ENV{CXX} g++ PATHS ENV PATH NO_DEFAULT_PATH)
+
 set(CMAKE_CXX_STANDARD 20)
 
 # Start Boost dependency
@@ -13,6 +16,12 @@ if(NOT Boost_FOUND)
     message(FATAL_ERROR "Could not find boost!")
 endif()
 # End Boost dependency
+
+#set(CMAKE_EXE_LINKER_FLAGS -L/usr/local/opt/llvm/lib)
+#set(CMAKE_CXX_FLAGS -I/usr/local/opt/llvm/include)
+
+# OpenMP Dependency
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++20 -fopenmp")
 
 add_executable(Advanced_CPP_and_Modern_Design
         #"src/Section 3.1/Exercise 3.1.1A/main.cpp"
@@ -37,7 +46,7 @@ add_executable(Advanced_CPP_and_Modern_Design
         #"src/Section 3.1/Exercise 3.1.4/Consumer.hpp")
         #"src/Section 3.1/Exercise 3.1.5/main.cpp")
         #"src/Section 3.2_3.3/Exercise 1/main.cpp"
-        #"src/Section 3.2_3.3/Exercise 2/main.cpp"
+        #"src/Section 3.2_3.3/Exercise 2/main.cpp"`
         #"src/Section 3.2_3.3/Exercise 3/main.cpp"
         #"src/Section 3.2_3.3/Exercise 3/ActiveObject.cpp"
         #"src/Section 3.2_3.3/Exercise 3/ActiveObject.hpp"
@@ -52,4 +61,5 @@ add_executable(Advanced_CPP_and_Modern_Design
         #"src/Section 3.4/Exercise 1/main.cpp"
         #"src/Section 3.4/Exercise 2/main.cpp"
         #"src/Section 3.4/Exercise 3/main.cpp"
-        "src/Section 3.4/Exercise 4/main.cpp")
+        #"src/Section 3.4/Exercise 4/main.cpp"
+        "src/Section 3.4/Exercise 5/main.cpp")
