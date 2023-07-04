@@ -147,8 +147,8 @@ int main()
     std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
 
     // Log the running time
-    auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-    std::cout << "\n*** Elapsed time: " << elapsedTime.count() << " millis ***" << std::endl;
+    auto elapsedTime = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+    std::cout << "\n*** Elapsed time: " << elapsedTime.count() << " micros ***" << std::endl;
 
     return 0;
 }
