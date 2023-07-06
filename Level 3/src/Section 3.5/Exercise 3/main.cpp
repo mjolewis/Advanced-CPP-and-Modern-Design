@@ -53,7 +53,6 @@ int main()
 
     // Part B - Forward lists have no member functions to give their size.
     // Write you own function in terms of std::distance().
-    long distance = std::distance(fl4.cbegin(), fl4.cend());
     long d1 = size(fl1);
     long d2 = size(fl2);
     long d3 = size(fl3);
