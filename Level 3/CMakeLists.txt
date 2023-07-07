@@ -71,3 +71,5 @@ add_executable(Advanced_CPP_and_Modern_Design
         "src/Section 3.5/Exercise 4/main.cpp"
         "src/Section 3.5/Exercise 4/ConcurrentPriorityQueue.hpp"
         "src/Section 3.5/Exercise 4/ConcurrentPriorityQueue.cpp")
+        #"src/Section 3.5/Exercise 5/main.cpp"
+        #"src/Section 3.5/Exercise 5/Command.hpp")

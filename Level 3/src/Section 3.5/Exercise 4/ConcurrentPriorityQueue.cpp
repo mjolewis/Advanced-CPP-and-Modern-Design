@@ -11,7 +11,6 @@
 
 #include <atomic>
 #include <condition_variable>
-#include <iostream>
 #include <optional>
 #include <queue>
 #include <thread>
@@ -139,10 +138,7 @@ ConcurrentPriorityQueue<T, Container, Compare>::operator=(ConcurrentPriorityQueu
 template<typename T, typename Container, typename Compare>
 const T& ConcurrentPriorityQueue<T, Container, Compare>::top() const
 {
-    std::lock_guard<std::mutex> lock(mutex);
-    const T& top = priorityQueue.top();
-
-    return top;
+    return priorityQueue.top();
 }
 
 /**
@@ -160,10 +156,7 @@ const T& ConcurrentPriorityQueue<T, Container, Compare>::top() const
 template<typename T, typename Container, typename Compare>
 bool ConcurrentPriorityQueue<T, Container, Compare>::empty() const
 {
-    std::lock_guard<std::mutex> lock(mutex);
-    bool isEmpty = priorityQueue.empty();
-
-    return isEmpty;
+    return priorityQueue.empty();
 }
 
 /**
@@ -181,10 +174,7 @@ bool ConcurrentPriorityQueue<T, Container, Compare>::empty() const
 template<typename T, typename Container, typename Compare>
 size_t ConcurrentPriorityQueue<T, Container, Compare>::size() const
 {
-    std::lock_guard<std::mutex> lock(mutex);
-    size_t size = priorityQueue.size();
-
-    return size;
+    return priorityQueue.size();
 }
 
 /**
@@ -200,8 +190,12 @@ size_t ConcurrentPriorityQueue<T, Container, Compare>::size() const
 template<typename T, typename Container, typename Compare>
 void ConcurrentPriorityQueue<T, Container, Compare>::push(const T& data)
 {
-    std::lock_guard<std::mutex> lock(mutex);
-    priorityQueue.push(data);
+    {
+        std::lock_guard<std::mutex> lock(mutex);
+        priorityQueue.push(data);
+    }
+
+    cv.notify_all();
 }
 
 /**
@@ -217,8 +211,12 @@ void ConcurrentPriorityQueue<T, Container, Compare>::push(const T& data)
 template<typename T, typename Container, typename Compare>
 void ConcurrentPriorityQueue<T, Container, Compare>::push(T&& data)
 {
-    std::lock_guard<std::mutex> lock(mutex);
-    priorityQueue.push(std::move(data));
+    {
+        std::lock_guard<std::mutex> lock(mutex);
+        priorityQueue.push(std::move(data));
+    }
+
+    cv.notify_all();
 }
 
 /**
@@ -238,8 +236,12 @@ template<typename T, typename Container, typename Compare>
 template<typename... Args>
 void ConcurrentPriorityQueue<T, Container, Compare>::emplace(Args &&... args)
 {
-    std::lock_guard<std::mutex> lock(mutex);
-    (priorityQueue.emplace(std::forward<T>(args)), ...);
+    {
+        std::lock_guard<std::mutex> lock(mutex);
+        (priorityQueue.emplace(std::forward<T>(args)), ...);
+    }
+
+    cv.notify_all();
 }
 
 /**
@@ -254,7 +256,27 @@ void ConcurrentPriorityQueue<T, Container, Compare>::emplace(Args &&... args)
 template<typename T, typename Container, typename Compare>
 void ConcurrentPriorityQueue<T, Container, Compare>::pop()
 {
-    std::lock_guard<std::mutex> lock(mutex);
+    // Thread safe mechanisms
+    // Unique lock is used with cv.wait per https://en.cppreference.com/w/cpp/thread/condition_variable/wait
+    std::unique_lock<std::mutex> lock(mutex);
+
+    // Only try to consume data if there is any data. cv.wait atomically unlocks lock, blocks the current
+    // executing thread, and adds it to the list of threads waiting on *this. The thread will be
+    // unblocked when notify_all() or notify_one() is executed (typically done when data is enqueued)
+    while (empty())
+    {
+        try
+        {
+            // This thread will wait for data before releasing the condition variable
+            // Note - until the cv is notified, the mutex is unlocked allowing other threads to acquire it
+            cv.wait(lock, [this]() -> bool { return !empty(); });
+        }
+        catch (const std::exception& e)
+        {
+            std::cerr << e.what() << std::endl;
+        }
+    }
+
     priorityQueue.pop();
 }
 
@@ -271,8 +293,12 @@ void ConcurrentPriorityQueue<T, Container, Compare>::pop()
 template<typename T, typename Container, typename Compare>
 void ConcurrentPriorityQueue<T, Container, Compare>::swap(ConcurrentPriorityQueue& source) noexcept
 {
-    std::lock_guard<std::mutex> lock(mutex);
-    priorityQueue.swap(source.priorityQueue);
+    {
+        std::lock_guard<std::mutex> lock(mutex);
+        priorityQueue.swap(source.priorityQueue);
+    }
+
+    cv.notify_all();
 }
 
 #endif
