@@ -1,42 +1,63 @@
 //
-// A simple test program to illustrate a  singled threaded Command-Processor
-// pattern in which executable commands are cached into a vector and run at
-// a future time.
-
+// A simple test program to illustrate a multi-threaded Producer/Consumer pattern, where
+// Producers push Commands to a ConcurrentPriorityQueue and Consumers pop the Commands from
+// the queue for execution.
+//
 // Created by Michael Lewis on 7/4/23.
 //
 
+#include <atomic>
 #include <iostream>
 #include <functional>
+#include <memory>
 #include <queue>
 #include <vector>
 
 #include "Command.hpp"
+#include "Consumer.hpp"
+#include "ConcurrentPriorityQueue.hpp"
+#include "Producer.hpp"
 
 int main()
 {
-    // Part A - Create a comparator for Command to compare two of its instances.
-    auto comparator = [](const Command& lhs, const Command& rhs) -> bool {
-        return lhs.priority() < rhs.priority(); };
+    constexpr int NUM_THREADS = 100;
+    std::array<std::thread, NUM_THREADS> producerThreads;
+    std::array<std::thread, NUM_THREADS> consumerThreads;
 
-    // Part B - Create several instances of Command.
-    Command command1([](double value) -> double {std::cout << "Command=1 : ID=1 : Value="; return value;}, 1);
-    Command command2([](double value) -> double {std::cout << "Command=2 : ID=2 : Value="; return value;}, 2);
-    Command command3([](double value) -> double {std::cout << "Command=3 : ID=3 : Value="; return value;}, 3);
-    Command command4([](double value) -> double {std::cout << "Command=4 : ID=4 : Value="; return value;}, 4);
+    // Create a comparator type to construct the ConcurrentPriorityQueue
+    auto comparator = [](const Command& lhs, const Command& rhs) -> bool { return lhs.priority() < rhs.priority(); };
+    // Create an alias to improve readability
+    using CPQ = std::shared_ptr<ConcurrentPriorityQueue<Command, std::vector<Command>, decltype(comparator)>>;
+    // Create the ConcurrentPriorityQueue
+    CPQ queue(new ConcurrentPriorityQueue<Command, std::vector<Command>, decltype(comparator)>{});
 
-    // Part C - Create a priority queue of commands and insert the objects from part b) into it.
-    std::priority_queue<Command, std::vector<Command>, decltype(comparator)> priorityQueue{comparator};
-    priorityQueue.push(command1);
-    priorityQueue.push(command2);
-    priorityQueue.push(command3);
-    priorityQueue.push(command4);
-
-    // Part D - Execute each command in the priority queue until it is empty.
-    while (!priorityQueue.empty())
+    // Create thread pool for Producers - Producers override the call operator so are Function Objects
+    // that will execute when the threads start
+    for (int i = 0; i < NUM_THREADS; ++i)
     {
-        Command c = priorityQueue.top();
-        c.Execute(50);
-        priorityQueue.pop();
+        producerThreads[i] = std::thread(Producer{queue});
     }
+
+    // Create thread pool for Consumers - Consumers override the call operator so are Function Objects
+    // that will execute when the threads start
+    for (int i = 0; i < NUM_THREADS; ++i)
+    {
+        consumerThreads[i] = std::thread(Consumer{queue});
+    }
+
+    // Wait for signal before joining thread
+    std::cout << "***** ENTER ANY CHARACTER TO END *****" << std::endl;
+    getchar();
+    ConcurrentPriorityQueue<Command, std::vector<Command>, decltype(comparator)>::killSwitch.store(true);
+
+    // Block the main thread in the thread groups finish executing
+    for (int i = 0; i < NUM_THREADS; ++i)
+    {
+        if (producerThreads[i].joinable()) producerThreads[i].join();
+        if (consumerThreads[i].joinable()) consumerThreads[i].join();
+    }
+
+    std::cout << "***** PROCESS WAS TERMINATED - GRACEFULLY ENDING *****" << std::endl;
+
+    return 0;
 }

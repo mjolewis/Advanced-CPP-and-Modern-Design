@@ -12,6 +12,7 @@
 #include <iostream>
 #include <functional>
 #include <thread>
+#include <utility>
 
 using FunctionType = std::function<double (double)>;
 using namespace std::chrono_literals;
@@ -19,11 +20,12 @@ using namespace std::chrono_literals;
 class Command
 {
 private:
-    long ID; // priority of command
+    long ID{}; // priority of command
     FunctionType algo;
 public:
-    Command(const FunctionType& algorithm, long priority)
-            : algo(algorithm), ID(priority){}
+    Command() = default;
+    Command(FunctionType  algorithm, long priority)
+            : algo(std::move(algorithm)), ID(priority){}
 
     void Execute(double x) {
         // Introduce delay to simulate a heavy algorithm
