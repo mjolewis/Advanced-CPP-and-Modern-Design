@@ -1,5 +1,5 @@
 //
-// An std::array<T, N> adapter that can be used to construct a compile time vector.
+// A compile time Vector adapter that wraps a std::array.
 //
 // Created by Michael Lewis on 7/8/23.
 //

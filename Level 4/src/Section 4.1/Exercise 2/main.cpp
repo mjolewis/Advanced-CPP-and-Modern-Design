@@ -1,4 +1,6 @@
 //
+// Illustrate basic use cases of a compile time Vector adapter.
+//
 // Created by Michael Lewis on 7/8/23.
 //
 
@@ -77,13 +79,27 @@ void test_VectorSubtraction()
 {
     Vector<double, 5> vec1{2, 4, 6, 8, 10};
     Vector<double, 5> vec2{1, 2, 3, 4, 5};
-    auto add = vec1.operator-(vec2);
-    add.print();
-    assert(1 == add[0]);
-    assert(2 == add[1]);
-    assert(3 == add[2]);
-    assert(4 == add[3]);
-    assert(5 == add[4]);
+    auto subtract = vec1.operator-(vec2);
+    subtract.print();
+    assert(1 == subtract[0]);
+    assert(2 == subtract[1]);
+    assert(3 == subtract[2]);
+    assert(4 == subtract[3]);
+    assert(5 == subtract[4]);
+}
+
+// Test unary negation of a vector. This modifies the current objects state
+void test_UnaryNegation()
+{
+
+    Vector<double, 5> vec1{2, 4, 6, 8, 10};
+    vec1.operator-();
+    vec1.print();
+    assert(-2 == vec1[0]);
+    assert(-4 == vec1[1]);
+    assert(-6 == vec1[2]);
+    assert(-8 == vec1[3]);
+    assert(-10 == vec1[4]);
 }
 
 // Test vector multiplication across this vector and that vector
@@ -123,6 +139,7 @@ int main()
     test_CopyCtor();
     test_VectorAddition();
     test_VectorSubtraction();
+    test_UnaryNegation();
     test_Multiplication();
     test_Modify();
 

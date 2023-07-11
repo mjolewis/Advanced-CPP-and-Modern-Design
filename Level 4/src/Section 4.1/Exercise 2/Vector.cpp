@@ -1,5 +1,5 @@
 //
-// An std::array<T, N> adapter that can be used to construct a compile time vector.
+// A compile time Vector adapter that wraps a std::array.
 //
 // Created by Michael Lewis on 7/8/23.
 //
@@ -149,13 +149,19 @@ Vector<T, N> Vector<T, N>::operator-(const Vector<T, N> &other) const
 template<typename T, size_t N>
 Vector<T, N> Vector<T, N>::operator-()
 {
-    Vector<T, N> result{};
     std::transform(array.cbegin(), array.cend(),
-                   result.begin(), // Write to a new Vector
-                   [](double element) -> double {return element;});
-    return result;
+                   array.begin(), // Write to the current Vector
+                   [](double element) -> double {return -element;});
+    return *this;
 }
 
+/**
+ * Injects a std::function that can be used to modify this Vector.
+ * @tparam T Data type of the elements stored in this std::vector
+ * @tparam N The size of this Vector
+ * @tparam Type Data type of the incoming function that is used to transform this Vector
+ * @param function
+ */
 template<typename T, size_t N>
 template<typename Type>
 void Vector<T, N>::modify(const std::function<Type(Type &)> &function)
@@ -185,8 +191,8 @@ void Vector<T, N>::print() const
  * @tparam Type Data type of the elements stored in the incoming vector
  * @tparam N_ The size of this Vector
  * @tparam F Scalar type used to multiply with this Vector
- * @param a
- * @param pt
+ * @param a The scalar multiplier
+ * @param pt The source vector that will be scaled
  * @return The scaled Vector
  */
 template<typename Type, size_t N_, typename F>

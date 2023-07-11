@@ -18,6 +18,9 @@ add_executable(Advanced_CPP_and_Modern_Design
         #"Section 4.1/Exercise 1/main.cpp"
         #"Section 4.1/Exercise 1/Proposition.cpp"
         #"Section 4.1/Exercise 1/Proposition.hpp"
-        "Section 4.1/Exercise 2/main.cpp"
-        "Section 4.1/Exercise 2/Vector.cpp"
-        "Section 4.1/Exercise 2/Vector.hpp")
+        #"Section 4.1/Exercise 2/main.cpp"
+        #"Section 4.1/Exercise 2/Vector.cpp"
+        #"Section 4.1/Exercise 2/Vector.hpp")
+        "Section 4.1/Exercise 3/main.cpp"
+        "Section 4.1/Exercise 3/Matrix.cpp"
+        "Section 4.1/Exercise 3/Matrix.hpp")
