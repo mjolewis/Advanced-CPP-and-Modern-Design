@@ -1,5 +1,5 @@
 //
-// A compile time Vector adapter that wraps a std::array.
+// A compile-time Vector adapter that wraps a std::array.
 //
 // Created by Michael Lewis on 7/8/23.
 //

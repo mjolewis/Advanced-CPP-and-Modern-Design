@@ -4,10 +4,13 @@
 // Created by Michael Lewis on 7/8/23.
 //
 
+#include <iostream>
+#include <ostream>
+
 #include "Proposition.hpp"
 
 /**
- * Overloaded conversion ctor
+ * Overloaded conversion ctor. See https://en.cppreference.com/w/cpp/language/converting_constructor
  * @param value A true or false value to be stored in the std::bitset<1>
  */
 Proposition::Proposition(bool value) : data{value}
@@ -118,5 +121,18 @@ Proposition operator<=>(const Proposition& lhs, const Proposition& rhs) noexcept
 {
     if (lhs.data != rhs.data) return Proposition{false};
     return Proposition{true};
+}
+
+/**
+ * Inserts character data or insert into rvalue stream.
+ * @param out The output stream objects. Output stream objects can write sequences
+ * of characters and represent other kinds of data.
+ * @param proposition A Proposition whose std::bitset is inserted into the stream
+ * @return An output stream with a std::bitset inserted
+ */
+std::ostream& operator<<(std::ostream& out, const Proposition& proposition)
+{
+    out << proposition.data;
+    return out;
 }
 

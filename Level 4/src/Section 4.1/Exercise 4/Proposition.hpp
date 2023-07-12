@@ -1,5 +1,5 @@
 //
-// // Adapter Classes for Bitsets to implement boolean algebra.
+// Adapter Classes for Bitsets to implement boolean algebra.
 //
 // Created by Michael Lewis on 7/8/23.
 //
@@ -8,6 +8,7 @@
 #define ADVANCED_CPP_AND_MODERN_DESIGN_PROPOSITION_HPP
 
 #include <bitset>
+#include <ostream>
 
 class Proposition
 {
@@ -16,7 +17,7 @@ private:
 
 public:
     Proposition() = default;
-    explicit Proposition(bool value);
+    Proposition(bool value);  // Conversion ctor https://en.cppreference.com/w/cpp/language/converting_constructor
     explicit Proposition(const std::bitset<1>& bitset);
 
     // Operator overloads
@@ -31,6 +32,7 @@ public:
     // Friends
     friend Proposition operator%(const Proposition& lhs, const Proposition& rhs)  noexcept;
     friend Proposition operator<=>(const Proposition& lhs, const Proposition& rhs)  noexcept;
+    friend std::ostream& operator<<(std::ostream& out, const Proposition& proposition);
 };
 
 #endif //ADVANCED_CPP_AND_MODERN_DESIGN_PROPOSITION_HPP
