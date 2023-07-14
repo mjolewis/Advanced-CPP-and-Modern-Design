@@ -1,4 +1,7 @@
 //
+// Exemplar tests that illustrate how to use several key sorting algorithms as provided by the standard
+// template algorithms library. This exercises focuses on working with and sorting numerical containers.
+//
 // Created by Michael Lewis on 7/14/23.
 //
 

@@ -1,4 +1,7 @@
 //
+// Exemplar tests that illustrate how to use several key searching algorithms as provided by the standard
+// template algorithms library. This exercises focuses on working with and searching numerical containers.
+//
 // Created by Michael Lewis on 7/13/23.
 //
 
