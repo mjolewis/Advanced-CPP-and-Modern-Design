@@ -34,4 +34,5 @@ add_executable(Advanced_CPP_and_Modern_Design
         #"Section 4.1/Exercise 5/Vector.hpp"
         #"Section 4.1/Exercise 5/Matrix.hpp"
         #"Section 4.1/Exercise 5/Matrix.cpp"
-        "Section 4.2/Exercise 1/main.cpp")
+        #"Section 4.2/Exercise 1/main.cpp"
+        "Section 4.2/Exercise 2/main.cpp")
