@@ -1,4 +1,7 @@
 //
+// Analyze usages of custom function objects, STL function objects, and
+// lambdas. Discuss the readability, maintainability, and efficiency of each approach.
+//
 // Created by Michael Lewis on 7/15/23.
 //
 
@@ -9,6 +12,7 @@
 #include <set>
 #include <vector>
 
+// Define aliases
 using Vector = std::vector<int>;
 using Set = std::set<int>;
 

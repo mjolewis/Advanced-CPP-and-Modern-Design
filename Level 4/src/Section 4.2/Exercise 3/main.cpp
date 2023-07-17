@@ -26,9 +26,9 @@ void test_scale_values()
     // Response: Modifying
 
     Vector vec{1, 2, 3};
-    Vector destination(3);
+    Vector destination;
     std::transform(vec.cbegin(), vec.cend(),
-                   destination.begin(),
+                   std::back_inserter(destination),
                    [](int element) { return element * 2; });
 
     std::cout << "Scale Values:";
