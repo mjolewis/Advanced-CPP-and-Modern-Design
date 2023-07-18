@@ -50,5 +50,5 @@ add_executable(Advanced_CPP_and_Modern_Design
         #"Section 4.3/Exercise 2/main.cpp"
         #"Section 4.3/Exercise 3/main.cpp"
         #"Section 4.3/Exercise 4/main.cpp"
-        "Section 4.3/Exercise 5/main.cpp"
-        )
+        #"Section 4.3/Exercise 5/main.cpp"
+        "Section 4.3/Exercise 6/main.cpp")
