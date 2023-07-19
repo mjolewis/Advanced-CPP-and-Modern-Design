@@ -3,12 +3,14 @@
 // Created by Michael Lewis on 7/18/23.
 //
 
+#include <algorithm>
+#include <list>
+
 #include <chrono>
 #include <iostream>
 
 #include <boost/random.hpp>
 #include <boost/random/generate_canonical.hpp>
-#include <boost/random/random_device.hpp>
 
 // Part A - Create a variate of the triangle distribution with lagged Fibonacci as random number engine.
 void test_triangle_distribution()

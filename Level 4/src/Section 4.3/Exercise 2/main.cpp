@@ -10,12 +10,6 @@
 #include <map>
 #include <random>
 
-template<typename T, typename E, typename D>
-std::vector<T> random_number_generator(D distribution, int size)
-{
-
-}
-
 // Part A - Generic function that works with any distribution and random number engine
 template<typename Dist, typename Eng>
 void GenerateRandomNumbers(Dist d, Eng eng, int nTrials, const std::string& s)
