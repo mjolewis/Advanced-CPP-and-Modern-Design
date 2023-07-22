@@ -61,6 +61,20 @@ void test_convert_string_to_date()
     std::cout << "Date version: " << date << std::endl;
 }
 
+// Pre-process the string to remove any spaces
+void pre_process(std::string& s)
+{
+    std::remove(s.begin(), s.end(), ' ');
+}
+
+// Split the incoming string into tokens
+std::vector<std::string> tokenize(std::string& s, const std::string& separator)
+{
+    std::vector<std::string> pairs;
+    boost::split(pairs, s, boost::is_any_of(separator), boost::token_compress_on);
+    return pairs;
+}
+
 // Part C - Consider a string consisting of string pairs of the form key = value
 // (for example, port = 23, pin = 87, value = 34.4).
 // Write a function to convert the string to an instance of std::map<std::string, double>.
@@ -69,19 +83,19 @@ void test_convert_string_to_map()
 {
     std::cout << "\n*** Convert String to Map ***" << std::endl;
 
-    std::string s1{"port = 23, pin = 87, value = 34.4"};
-    std::remove(s1.begin(), s1.end(), ' ');
-    std::vector<std::string> pairs;
-    boost::split(pairs, s1, boost::is_any_of(","), boost::token_compress_on);
+    std::string s{"port = 23, pin = 87, value = 34.4"};
+
+    pre_process(s);
+    auto pairs = tokenize(s, ",");
 
     std::unordered_map<std::string, double> name_value;
     for (auto pair : pairs)
     {
-        std::vector<std::string> temp;
-        boost::split(temp, pair, boost::is_any_of("="), boost::token_compress_on);
+        auto temp = tokenize(pair, "=");
         name_value.insert( {temp.at(0), stod(temp.at(1))} );
     }
 
+    // Log the output to verify results
     for (const auto& pair : name_value)
     {
         std::cout << pair.first << "=" << pair.second << std::endl;
