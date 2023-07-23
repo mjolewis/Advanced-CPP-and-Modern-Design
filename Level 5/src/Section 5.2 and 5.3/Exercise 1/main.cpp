@@ -1,4 +1,7 @@
 //
+// Illustrate how to work with regular expressions and develop an understanding
+// of what strings would match with specific expressions.
+//
 // Created by Michael Lewis on 7/22/23.
 //
 
