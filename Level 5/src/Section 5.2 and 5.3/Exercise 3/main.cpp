@@ -1,4 +1,6 @@
 //
+// Illustrate how to create and work with regex iterators
+//
 // Created by Michael Lewis on 7/23/23.
 //
 
