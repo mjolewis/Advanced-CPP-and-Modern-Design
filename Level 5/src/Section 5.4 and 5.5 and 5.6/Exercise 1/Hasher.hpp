@@ -10,6 +10,7 @@
 #define ADVANCED_CPP_AND_MODERN_DESIGN_HASHER_HPP
 
 #include <cstddef>
+#include <functional>
 
 class Hasher
 {

@@ -27,4 +27,11 @@ add_executable(Advanced_CPP_and_Modern_Design
         #"Section 5.2 and 5.3/Exercise 6/main.cpp"
         #"Section 5.2 and 5.3/Exercise 7/main.cpp"
         #"Section 5.2 and 5.3/Exercise 8/main.cpp"
-        "Section 5.4 and 5.5 and 5.6/Exercise 1/main.cpp" "Section 5.4 and 5.5 and 5.6/Exercise 1/Hasher.hpp" "Section 5.4 and 5.5 and 5.6/Exercise 1/BoostHasher.hpp")
+        #"Section 5.4 and 5.5 and 5.6/Exercise 1/main.cpp"
+        #"Section 5.4 and 5.5 and 5.6/Exercise 1/Hasher.hpp"
+        #"Section 5.4 and 5.5 and 5.6/Exercise 1/BoostHasher.hpp")
+        "Section 5.4 and 5.5 and 5.6/Exercise 2/Point.hpp"
+        "Section 5.4 and 5.5 and 5.6/Exercise 2/Point.cpp"
+        "Section 5.4 and 5.5 and 5.6/Exercise 2/main.cpp"
+        "Section 5.4 and 5.5 and 5.6/Exercise 2/LineSegment.cpp"
+        "Section 5.4 and 5.5 and 5.6/Exercise 2/LineSegment.hpp" "Section 5.4 and 5.5 and 5.6/Exercise 2/PointHash.hpp")
