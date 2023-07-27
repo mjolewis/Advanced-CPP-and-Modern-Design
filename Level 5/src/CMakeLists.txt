@@ -36,9 +36,12 @@ add_executable(Advanced_CPP_and_Modern_Design
         #"Section 5.4 and 5.5 and 5.6/Exercise 2/LineSegment.cpp"
         #"Section 5.4 and 5.5 and 5.6/Exercise 2/LineSegment.hpp"
         #"Section 5.4 and 5.5 and 5.6/Exercise 2/PointHasher.hpp"
-        "Section 5.4 and 5.5 and 5.6/Exercise 3/main.cpp"
-        "Section 5.4 and 5.5 and 5.6/Exercise 3/Point.hpp"
-        "Section 5.4 and 5.5 and 5.6/Exercise 3/Point.cpp"
-        "Section 5.4 and 5.5 and 5.6/Exercise 3/StopWatch.cpp"
-        "Section 5.4 and 5.5 and 5.6/Exercise 3/StopWatch.hpp"
-        "Section 5.4 and 5.5 and 5.6/Exercise 3/PointHasher.hpp")
+        #"Section 5.4 and 5.5 and 5.6/Exercise 3/main.cpp"
+        #"Section 5.4 and 5.5 and 5.6/Exercise 3/Point.hpp"
+        #"Section 5.4 and 5.5 and 5.6/Exercise 3/Point.cpp"
+        #"Section 5.4 and 5.5 and 5.6/Exercise 3/StopWatch.cpp"
+        #"Section 5.4 and 5.5 and 5.6/Exercise 3/StopWatch.hpp"
+        #"Section 5.4 and 5.5 and 5.6/Exercise 3/PointHasher.hpp"
+        "Section 5.4 and 5.5 and 5.6/Exercise 4/main.cpp"
+        "Section 5.4 and 5.5 and 5.6/Exercise 4/Point.hpp"
+        "Section 5.4 and 5.5 and 5.6/Exercise 4/Point.cpp" "Section 5.4 and 5.5 and 5.6/Exercise 4/Order.cpp" "Section 5.4 and 5.5 and 5.6/Exercise 4/Order.hpp")
