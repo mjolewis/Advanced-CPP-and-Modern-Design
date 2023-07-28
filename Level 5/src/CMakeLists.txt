@@ -47,4 +47,9 @@ add_executable(Advanced_CPP_and_Modern_Design
         #"Section 5.4 and 5.5 and 5.6/Exercise 4/Point.cpp"
         #"Section 5.4 and 5.5 and 5.6/Exercise 4/Order.cpp"
         #"Section 5.4 and 5.5 and 5.6/Exercise 4/Order.hpp"
-        "Section 5.4 and 5.5 and 5.6/Exercise 5/main.cpp")
+        #"Section 5.4 and 5.5 and 5.6/Exercise 5/main.cpp"
+        "Section 5.4 and 5.5 and 5.6/Exercise 6/main.cpp"
+        "Section 5.4 and 5.5 and 5.6/Exercise 6/Point.cpp"
+        "Section 5.4 and 5.5 and 5.6/Exercise 6/Point.hpp"
+        "Section 5.4 and 5.5 and 5.6/Exercise 6/Order.cpp"
+        "Section 5.4 and 5.5 and 5.6/Exercise 6/Order.hpp")

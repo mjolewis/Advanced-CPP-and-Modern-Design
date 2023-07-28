@@ -1,4 +1,6 @@
 //
+// Illustrate how to examine attributes of an unordered set
+//
 // Created by Michael Lewis on 7/27/23.
 //
 
@@ -7,6 +9,7 @@
 #include <functional>
 #include <unordered_set>
 
+// An interface to inspect properties of an std::unordered_set
 template <typename Key, typename Hash, typename EqPred>
 void BucketInformation(const std::unordered_set<Key, Hash, EqPred>& c)
 {
