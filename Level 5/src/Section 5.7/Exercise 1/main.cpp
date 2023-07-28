@@ -1,4 +1,6 @@
 //
+// Simple illustration of how to use boost::bimap
+//
 // Created by Michael Lewis on 7/28/23.
 //
 
