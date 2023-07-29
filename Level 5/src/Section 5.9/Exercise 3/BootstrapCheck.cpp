@@ -10,7 +10,7 @@
 
 /**
  * A Combiner that iterates in slots and return first 'false' value; otherwise, 'true'
- * @tparam InputIterator
+ * @tparam InputIterator A generic type of iterator
  * @param first An begin iterator for a Signal
  * @param last An end iterator for a Signal
  * @return True if and only if no false values are in the slots
