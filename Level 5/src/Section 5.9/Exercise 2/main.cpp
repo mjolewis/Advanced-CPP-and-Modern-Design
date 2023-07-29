@@ -1,4 +1,5 @@
 //
+// Illustrate core functionality of Boost Signal and Slots 2
 // Created by Michael Lewis on 7/29/23.
 //
 
