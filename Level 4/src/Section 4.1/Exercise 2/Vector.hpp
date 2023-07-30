@@ -45,5 +45,4 @@ public:
 #include "Vector.cpp"
 #endif //ADVANCED_CPP_AND_MODERN_DESIGN_VECTOR_CPP
 
-
 #endif //ADVANCED_CPP_AND_MODERN_DESIGN_VECTOR_HPP

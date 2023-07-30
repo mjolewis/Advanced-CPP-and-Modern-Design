@@ -71,4 +71,11 @@ add_executable(Advanced_CPP_and_Modern_Design
         #"Section 5.9/Exercise 4/main.cpp"
         #"Section 5.9/Exercise 4/SumCombiner.cpp"
         #"Section 5.9/Exercise 4/SumCombiner.hpp"
-        "Section 5.9/Exercise 5/main.cpp")
+        #"Section 5.9/Exercise 5/main.cpp"
+        "Section 5.9/Exercise 6/main.cpp"
+        "Section 5.9/Exercise 6/Hardware.cpp"
+        "Section 5.9/Exercise 6/Hardware.hpp"
+        "Section 5.9/Exercise 6/DataLayer.cpp"
+        "Section 5.9/Exercise 6/DataLayer.hpp"
+        "Section 5.9/Exercise 6/CommunicationLayer.cpp"
+        "Section 5.9/Exercise 6/CommunicationLayer.hpp")
