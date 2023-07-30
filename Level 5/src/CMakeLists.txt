@@ -68,4 +68,7 @@ add_executable(Advanced_CPP_and_Modern_Design
         #"Section 5.9/Exercise 3/main.cpp"
         #"Section 5.9/Exercise 3/BootstrapCheck.cpp"
         #"Section 5.9/Exercise 3/BootstrapCheck.hpp"
-        "Section 5.9/Exercise 4/main.cpp" "Section 5.9/Exercise 4/SumCombiner.cpp" "Section 5.9/Exercise 4/SumCombiner.hpp")
+        #"Section 5.9/Exercise 4/main.cpp"
+        #"Section 5.9/Exercise 4/SumCombiner.cpp"
+        #"Section 5.9/Exercise 4/SumCombiner.hpp"
+        "Section 5.9/Exercise 5/main.cpp")
