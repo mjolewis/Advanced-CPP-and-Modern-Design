@@ -80,4 +80,5 @@ add_executable(Advanced_CPP_and_Modern_Design
         #"Section 5.9/Exercise 6/CommunicationLayer.cpp"
         #"Section 5.9/Exercise 6/CommunicationLayer.hpp")
         #"Section 5.10/Exercise 1/main.cpp"
-        "Section 5.10/Exercise 2/main.cpp")
+        #"Section 5.10/Exercise 2/main.cpp"
+        "Section 5.10/Exercise 3/main.cpp")
