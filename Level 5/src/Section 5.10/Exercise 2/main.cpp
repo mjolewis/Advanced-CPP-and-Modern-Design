@@ -22,6 +22,7 @@ int main()
     {
         for (unsigned j = 0; j < m1.size2 (); ++j)
         {
+            // Part B - Use the operator () to access and modify the elements of matrices.
             m1(i, j) = 4 * (i + j + 1);
         }
     }
@@ -32,14 +33,10 @@ int main()
     {
         for (unsigned j = 0; j < m2.size2 (); ++j)
         {
+            // Part B - Use the operator () to access and modify the elements of matrices.
             m2(i, j) = 2 * (i + j + 1);
         }
     }
-
-    // Part B - Use the operator () to access and modify the elements of matrices.
-    // See above on lines 24 and 34. Note. Matrix does not provide the subscript operator,
-    // which is why it is not demoed here. For example
-    // m2[0,1] is a compiler error
 
     // Part C - Add and subtract matrices.
     std::cout << "\n*** Matrix addition and subtraction ***" << std::endl;
