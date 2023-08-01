@@ -13,21 +13,19 @@
 #include <boost/numeric/ublas/vector.hpp>
 #include <boost/numeric/ublas/io.hpp>
 
-using namespace boost::numeric::ublas;
-
 using Range = std::tuple<size_t, size_t>;
 using Result = std::tuple<Range, bool>;
-using Vector = vector<int>;
+using Vector = boost::numeric::ublas::vector<double>;
 using value_type = int;
 using UnaryPredicate = std::function<int (int)>;
 
 // find searches for an element equal to value (using operator==)
-std::tuple<long, bool> find(const Vector& v, int value)
+std::tuple<long, bool> find(const Vector::const_iterator& first, const Vector::const_iterator& last, int value)
 {
-    auto currentIterator = v.cbegin();
-    auto it = std::find(currentIterator, v.cend(), value);
-    auto index = std::distance(v.cbegin(), it);
-    if (it == v.cend()) return std::make_tuple(index, false);
+    auto currentIterator = first;
+    auto it = std::find(currentIterator, last, value);
+    auto index = std::distance(first, it);
+    if (it == last) return std::make_tuple(index, false);
     return std::make_tuple(index, true);
 }
 
@@ -84,14 +82,14 @@ Result find_sequential_greater_lower_and_upper_bound(const Vector& v, value_type
 // Returns a range containing all elements equivalent to value in the range [first, last).
 // The range is the first index of the element that is not less than value and the second is the index
 // of the first element greater than value.
-Result equal_range(const Vector& v, value_type x)
+Result equal_range(const Vector::const_iterator& first, const Vector::const_iterator& last, int value)
 {
-    auto currentIterator = v.cbegin();
+    auto currentIterator = first;
     // Returns a range containing all elements equivalent to value in the range [first, last).
-    auto pair = std::equal_range(currentIterator, v.cend(), x);
-    size_t index1 = std::distance(v.cbegin(), pair.first);
-    size_t index2 = std::distance(v.cbegin(), pair.second);
-    if (pair.first != v.cend() && pair.second != v.cend())
+    auto pair = std::equal_range(currentIterator, last, value);
+    size_t index1 = std::distance(first, pair.first);
+    size_t index2 = std::distance(first, pair.second);
+    if (pair.first != last && pair.second != last)
     {
         return std::make_tuple(std::make_tuple(index1, index2), true);
     }
@@ -100,33 +98,33 @@ Result equal_range(const Vector& v, value_type x)
 }
 
 // find_if_not searches for an element for which predicate q returns false
-std::tuple<long, bool> find_if_not(const Vector& v, UnaryPredicate& p)
+std::tuple<long, bool> find_if_not(const Vector::const_iterator& first, const Vector::const_iterator& last, UnaryPredicate& p)
 {
-    auto currentIterator = v.cbegin();
-    auto it = std::find_if_not(currentIterator, v.cend(), p);
-    auto index = std::distance(v.cbegin(), it);
-    if (it == v.cend()) return std::make_tuple(index, false);
+    auto currentIterator = first;
+    auto it = std::find_if_not(currentIterator, last, p);
+    auto index = std::distance(first, it);
+    if (it == last) return std::make_tuple(index, false);
     return std::make_tuple(index, true);
 }
 
 // Test functionality for finding a target value
 void test_find()
 {
-    vector<double> v1{5};
+    Vector v1{5};
     v1(0) = 1;
     v1(1) = 2;
     v1(2) = 3;
     v1(3) = 4;
     v1(4) = 5;
     value_type target = 3;
-    auto result = find(v1, target);
+    auto result = find(v1.cbegin(), v1.cend(), target);
     auto index = std::get<0>(result);
     auto found = std::get<1>(result);
     assert(2 == index);
     assert(found);
 
     target = 19;
-    result = find(v1, target);
+    result = find(v1.cbegin(), v1.cend(), target);
     index = std::get<0>(result);
     found = std::get<1>(result);
     assert(5 == index);
@@ -136,7 +134,7 @@ void test_find()
 // Test functionality for finding the first and last index that are less than or equal to and greater than the target value
 void test_find_sequential_greater()
 {
-    vector<double> v1{5};
+    Vector v1{5};
     v1(0) = 1;
     v1(1) = 2;
     v1(2) = 3;
@@ -155,7 +153,7 @@ void test_find_sequential_greater()
 // Test functionality for finding the first and last index that are less than or equal to and greater than the target value
 void test_find_sequential_greater_lower_and_upper_bound()
 {
-    vector<double> v1{5};
+    Vector v1{5};
     v1(0) = 1;
     v1(1) = 2;
     v1(2) = 3;
@@ -174,14 +172,14 @@ void test_find_sequential_greater_lower_and_upper_bound()
 // Test functionality for finding the first and last index that are less than or equal to and greater than the target value
 void test_equal_range()
 {
-    vector<double> v1{5};
+    Vector v1{5};
     v1(0) = 1;
     v1(1) = 2;
     v1(2) = 3;
     v1(3) = 4;
     v1(4) = 5;
     value_type target = 3;
-    Result result = equal_range(v1, target);
+    Result result = equal_range(v1.cbegin(), v1.cend(), target);
     auto first = std::get<0>(std::get<0>(result));
     auto second = std::get<1>(std::get<0>(result));
     auto found = std::get<1>(result);
@@ -193,21 +191,21 @@ void test_equal_range()
 // Test functionality for finding indices where the specified predicate is false
 void test_find_if_not()
 {
-    vector<double> v1{5};
+    Vector v1{5};
     v1(0) = 1;
     v1(1) = 2;
     v1(2) = 3;
     v1(3) = 4;
     v1(4) = 5;
     UnaryPredicate p = [](int element) -> bool { return element == 5; };
-    auto result = find_if_not(v1, p);
+    auto result = find_if_not(v1.cbegin(), v1.cend(), p);
     auto index = std::get<0>(result);
     auto found = std::get<1>(result);
     assert(0 == index);
     assert(found);
 
     p = [](int element) -> bool { return true; };
-    result = find_if_not(v1, p);
+    result = find_if_not(v1.cbegin(), v1.cend(), p);
     index = std::get<0>(result);
     found = std::get<1>(result);
     assert(std::distance(v1.cbegin(), v1.cend()) == index);
