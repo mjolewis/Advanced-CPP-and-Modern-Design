@@ -62,8 +62,8 @@ int main()
 
     // Part F - Find the largest element in a heap. (Note, I'll first convert the sorted collection into a heap)
     std::make_heap(vec2.begin(), vec2.end());
-    auto max = std::max_element(vec2.cbegin(), vec2.cend());
-    std::cout << "Max element:" << *max << std::endl;
+    auto max = vec2.front();
+    std::cout << "Max element:" << max << std::endl;
 
     return 0;
 }
