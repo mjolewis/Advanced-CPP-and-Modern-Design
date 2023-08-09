@@ -1,12 +1,9 @@
 //
-// Simple test case to illustrate the create and use of a Point via the Singleton pattern.
-// Note - This exercise uses raw pointers simply to conform to the provided code in the lecture material.
-// In a production application, I'd migrate these raw pointers to smart pointers instead.
+// Simple test case to illustrate the Composite Pattern
 //
 // Created by Michael Lewis on 8/7/23.
 //
 
-#include <cassert>
 #include <iostream>
 #include <memory>
 
@@ -16,6 +13,7 @@
 #include "Shape.hpp"
 #include "ShapeComposite.hpp"
 
+// Recursively prints Shapes held in a ShapeComposite object (handles both leaf nodes and composite nodes)
 void print(const ShapeComposite& sc1)
 {
     for (const auto& it : sc1)
@@ -26,9 +24,6 @@ void print(const ShapeComposite& sc1)
 
 int main()
 {
-    // Write a test program to test the ShapeComposite.
-    // Try to place shape composites in other shape composites.
-    // In that test program write a Print(ShapeComposite sc) function that recursively prints the composite.
     std::shared_ptr<Point> p1{new Point{3, 4}};
     std::shared_ptr<Point> p2{new Point{2, 5}};
     std::shared_ptr<Line> line{new Line{*p1, *p2}};

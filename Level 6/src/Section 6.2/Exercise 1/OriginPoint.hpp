@@ -15,6 +15,7 @@ class OriginPoint : public Singleton<Point>
 public:
     OriginPoint() = default;
     OriginPoint(const OriginPoint & source) = delete;    // copy constructor
+    ~OriginPoint() = default
 
     // Assignment operator
     OriginPoint & operator = (const OriginPoint& source) = delete;

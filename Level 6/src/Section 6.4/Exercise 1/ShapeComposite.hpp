@@ -24,9 +24,11 @@ public:
     typedef std::list<std::shared_ptr<Shape>>::const_iterator const_iterator;
 
     ShapeComposite();
+    ShapeComposite(const ShapeComposite& other);
     ~ShapeComposite() override = default;
-    // Note - Per https://quantnet.com/threads/std-shared_ptr-is-incompatible-with-shapecomposite.50089/post-323451
-    // We are no longer explicitly deleting copy ctor or assignment operator
+
+    // Operator Overloads
+    ShapeComposite& operator=(const ShapeComposite& other);
 
     void addShape(const std::shared_ptr<Shape>& shape);
     iterator begin() noexcept;
@@ -38,6 +40,7 @@ public:
     size_t count() const;
 
     void print() const override;
+    std::shared_ptr<Shape> clone() const override;
 };
 
 

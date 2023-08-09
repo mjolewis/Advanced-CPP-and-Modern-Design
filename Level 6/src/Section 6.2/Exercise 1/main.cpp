@@ -1,5 +1,5 @@
 //
-// Simple test case to illustrate the create and use of a Point via the Singleton pattern.
+// Simple test case to illustrate the creation and use of a Point via the Singleton pattern.
 //
 // Created by Michael Lewis on 8/7/23.
 //
