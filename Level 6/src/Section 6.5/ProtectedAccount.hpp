@@ -12,7 +12,6 @@
 #define ADVANCED_CPP_AND_MODERN_DESIGN_PROTECTEDACCOUNT_HPP
 
 #include <memory>
-#include <string>
 
 #include "Account.hpp"
 
@@ -21,9 +20,6 @@ class ProtectedAccount : public Account
 private:
     std::shared_ptr<Account> account;
     std::string password;
-
-    // Private so clients are prevented from accessing the balance without a password
-    double getBalance() override;
 
 public:
     ProtectedAccount() = delete; // Deleted to ensure client provides a password
@@ -38,7 +34,7 @@ public:
 
     // Core functionality
     void withdraw(double amount) override;
-    double getBalance(const std::string& _password);
+    double getBalance() override;
 };
 
 

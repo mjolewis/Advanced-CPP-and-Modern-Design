@@ -20,9 +20,6 @@ class RealAccount : public Account
 private:
     double balance;
 
-    // Private so clients must access the balance through the ProtectedAccount proxy
-    double getBalance() override;
-
 public:
     RealAccount();
     explicit RealAccount(double initialBalance);
@@ -36,6 +33,7 @@ public:
 
     // Core functionality
     void withdraw(double amount) override;
+    double getBalance() override;
 };
 
 

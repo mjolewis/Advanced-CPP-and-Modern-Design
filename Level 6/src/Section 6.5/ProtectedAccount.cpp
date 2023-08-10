@@ -8,7 +8,7 @@
 // Created by Michael Lewis on 8/9/23.
 //
 
-#include <string>
+#include <iostream>
 #include <utility>
 
 #include "Account.hpp"
@@ -47,16 +47,11 @@ void ProtectedAccount::withdraw(double amount)
  */
 double ProtectedAccount::getBalance()
 {
-    return account->getBalance();
-}
+    // Read in user password to validate if this user can access the balance
+    std::string pwd;
+    std::cout << "Enter password: ";
+    std::cin >> pwd;
 
-/**
- * Reads the current balance of the account. Requires privileged access to read the balance
- * @param _password A password to authorize access to the balance
- * @return The current balance of the account
- */
-double ProtectedAccount::getBalance(const std::string &_password)
-{
-    if (password != _password) throw NoAccessException();
-    else return getBalance();
+    if (pwd.empty() || password != pwd) throw NoAccessException();
+    else return account->getBalance();
 }
