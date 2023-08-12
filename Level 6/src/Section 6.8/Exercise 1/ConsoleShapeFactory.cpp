@@ -1,7 +1,7 @@
 //
 // A concrete factory responsible for creating shapes
 //
-// Note - This Factory is not copy or move constructable. Nor is it copy or move assignable. These
+// Note - This Strategy is not copy or move constructable. Nor is it copy or move assignable. These
 // capabilities will only be supported if there's an eventual need for them
 //
 // Created by Michael Lewis on 8/11/23.
