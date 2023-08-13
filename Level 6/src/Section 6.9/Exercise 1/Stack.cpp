@@ -1,0 +1,69 @@
+//
+// A Stack is a FIFO data structure. However, the main purpose of this Stack is to illustrate the
+// State Pattern. The Stake will transition between an EmptyState, a NotFullNotEmptyState and a
+// FullState
+//
+// Note - As the main purpose of this Class is to illustrate the State pattern, ctors and assignment
+// operators are defaulted for simplicity.
+//
+// Created by Michael Lewis on 8/12/23.
+//
+
+#ifndef ADVANCED_CPP_AND_MODERN_DESIGN_STACK_CPP
+#define ADVANCED_CPP_AND_MODERN_DESIGN_STACK_CPP
+
+#include <memory>
+
+#include "Stack.hpp"
+#include "StackState.hpp"
+#include "EmptyState.hpp"
+
+template<typename T>
+constexpr Stack<T>::Stack() : currentIdx{0}, state{}, size{1}
+{
+    init(1);
+}
+
+template<typename T>
+Stack<T>::Stack(const size_t& _size) : currentIdx{0}, state{}, size{_size}
+{
+    init(_size);
+}
+
+template<typename T>
+void Stack<T>::init(const size_t& _size)
+{
+    if (_size < 1)
+    {
+        stack = std::make_unique<T[]>(1);
+        size = 1;
+    }
+    else
+    {
+        stack = std::make_unique<T[]>(size);
+        size = _size;
+    }
+
+    currentIdx = 0;
+    state = EmptyState<T>::Instance();
+}
+
+template<typename T>
+void Stack<T>::changeState(StackState<T>* _state)
+{
+    state = _state;
+}
+
+template<typename T>
+void Stack<T>::push(const T &element)
+{
+    state->push(this, element);
+}
+
+template<typename T>
+T Stack<T>::pop()
+{
+    return state->pop(this);
+}
+
+#endif
