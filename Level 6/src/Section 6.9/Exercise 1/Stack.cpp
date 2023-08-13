@@ -18,18 +18,33 @@
 #include "StackState.hpp"
 #include "EmptyState.hpp"
 
+/**
+ * Default ctor
+ * @tparam T The data type contained in the stack
+ */
 template<typename T>
 constexpr Stack<T>::Stack() : currentIdx{0}, state{}, size{1}
 {
     init(1);
 }
 
+/**
+ * Overloaded ctor
+ * @tparam T The data type contained in the stack
+ * @param _size The size of the stack
+ */
 template<typename T>
 Stack<T>::Stack(const size_t& _size) : currentIdx{0}, state{}, size{_size}
 {
     init(_size);
 }
 
+/**
+ * Initializes the stack. If size is less than one, then this function overrides the size with a default size
+ * of one
+ * @tparam T The data type contained in the stack
+ * @param _size The size of the stack
+ */
 template<typename T>
 void Stack<T>::init(const size_t& _size)
 {
@@ -48,18 +63,34 @@ void Stack<T>::init(const size_t& _size)
     state = EmptyState<T>::Instance();
 }
 
+/**
+ * Transitions the stack into the next state. Follows a state transition diagram based on the number
+ * of elements in the stack
+ * @tparam T The data type contained in the stack
+ * @param state The new state of the stack
+ */
 template<typename T>
 void Stack<T>::changeState(StackState<T>* _state)
 {
     state = _state;
 }
 
+/**
+ * Push an element onto a stack
+ * @tparam T The data type contained in the stack
+ * @param element The element to push
+ */
 template<typename T>
 void Stack<T>::push(const T &element)
 {
     state->push(this, element);
 }
 
+/**
+ * Removes and returns an element from the top of the stack
+ * @tparam T The data type contained in the stack
+ * @return The element at the top of the stack
+ */
 template<typename T>
 T Stack<T>::pop()
 {

@@ -16,12 +16,22 @@
 #include "FullState.hpp"
 #include "NotFullNotEmptyState.hpp"
 
+/**
+ * Default ctor
+ * @tparam T
+ */
 template<typename T>
 constexpr NotFullNotEmptyState<T>::NotFullNotEmptyState() : StackState<T>()
 {
 
 }
 
+/**
+ * Push an element onto a stack
+ * @tparam T The data type contained in the stack
+ * @param stack The stack to push onto
+ * @param element The element to push
+ */
 template<typename T>
 void NotFullNotEmptyState<T>::push(Stack<T>* stack, const T& element)
 {
@@ -29,6 +39,12 @@ void NotFullNotEmptyState<T>::push(Stack<T>* stack, const T& element)
     if (stack->currentIdx == stack->size) this->changeState(stack, FullState<T>::Instance());
 }
 
+/**
+ * Removes and returns an element from the top of the stack
+ * @tparam T The data type contained in the stack
+ * @param stack The stack to push onto
+ * @return The element at the top of the stack
+ */
 template<typename T>
 T NotFullNotEmptyState<T>::pop(Stack<T>* stack)
 {
@@ -36,6 +52,11 @@ T NotFullNotEmptyState<T>::pop(Stack<T>* stack)
     return StackState<T>::pop(stack);
 }
 
+/**
+ * Leverages the Singleton pattern to create or retrieve the single instance of a NotFullNotEmptyState
+ * @tparam T The data type contained in the stack
+ * @return The single instance of NotFullNotEmptyState
+ */
 template<typename T>
 NotFullNotEmptyState<T>* NotFullNotEmptyState<T>::Instance()
 {

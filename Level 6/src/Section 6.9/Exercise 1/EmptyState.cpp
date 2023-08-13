@@ -17,12 +17,22 @@
 #include "EmptyState.hpp"
 #include "FullState.hpp"
 
+/**
+ * Default ctor
+ * @tparam T The data type contained in the stack
+ */
 template<typename T>
 constexpr EmptyState<T>::EmptyState() : StackState<T>()
 {
 
 }
 
+/**
+ * Push an element onto a stack
+ * @tparam T The data type contained in the stack
+ * @param stack The stack to push onto
+ * @param element The element to push
+ */
 template<typename T>
 void EmptyState<T>::push(Stack<T>* stack, const T& element)
 {
@@ -33,6 +43,9 @@ void EmptyState<T>::push(Stack<T>* stack, const T& element)
 
 /**
  * Throws an out of range exception because you cannot pop from an empty stack
+ * @tparam T The data type contained in the stack
+ * @param stack The stack to push onto
+ * @return The element at the top of the stack
  * @throws std::out_of_range
  */
 template<typename T>
@@ -41,6 +54,11 @@ T EmptyState<T>::pop(Stack<T>* stack)
     throw std::out_of_range("Empty Stack");
 }
 
+/**
+ * Leverages the Singleton pattern to create or retrieve the single instance of a FullState
+ * @tparam T The data type contained in the stack
+ * @return The single instance of FullState
+ */
 template<typename T>
 EmptyState<T>* EmptyState<T>::Instance()
 {

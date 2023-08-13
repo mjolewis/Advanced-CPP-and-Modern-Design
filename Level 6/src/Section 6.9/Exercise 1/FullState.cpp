@@ -16,6 +16,10 @@
 #include "FullState.hpp"
 #include "NotFullNotEmptyState.hpp"
 
+/**
+ * Default ctor
+ * @tparam T The data type contained in the stack
+ */
 template<typename T>
 constexpr FullState<T>::FullState() : StackState<T>()
 {
@@ -24,6 +28,9 @@ constexpr FullState<T>::FullState() : StackState<T>()
 
 /**
  * Throws an out of range exception because you cannot push onto a full stack
+ * @tparam T The data type contained in the stack
+ * @param stack The stack to push onto
+ * @param element The element to push
  * @throws std::out_of_range
  */
 template<typename T>
@@ -32,6 +39,12 @@ void FullState<T>::push(Stack<T>* stack, const T& element)
     throw std::out_of_range("Full Stack");
 }
 
+/**
+ * Removes and returns an element from the top of the stack
+ * @tparam T The data type contained in the stack
+ * @param stack The stack to push onto
+ * @return The element at the top of the stack
+ */
 template<typename T>
 T FullState<T>::pop(Stack<T>* stack)
 {
@@ -40,6 +53,11 @@ T FullState<T>::pop(Stack<T>* stack)
     return StackState<T>::pop(stack);
 }
 
+/**
+ * Leverages the Singleton pattern to create or retrieve the single instance of a FullState
+ * @tparam T The data type contained in the stack
+ * @return The single instance of FullState
+ */
 template<typename T>
 FullState<T>* FullState<T>::Instance()
 {
