@@ -42,5 +42,6 @@ int main()
 {
     test_distanceToOrigin();
     test_distanceBetweenPoints();
+    test_length();
     return 0;
 }
