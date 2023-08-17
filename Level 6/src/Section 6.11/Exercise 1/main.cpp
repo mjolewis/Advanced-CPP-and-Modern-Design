@@ -31,5 +31,13 @@ int main()
     std::cout << "*** Decrease the Counter ***" << std::endl;
     for (int i = 0; i < 5; ++i) counter.decreaseCounter();
 
+    std::cout << "*** Detached Long Format - Expect only Double Format Below ***" << std::endl;
+    counter.detach(longFormat);
+    for (int i = 0; i < 5; ++i) counter.increaseCounter();
+
+    std::cout << "*** Detached Double Format - Expect No Output Below ***" << std::endl;
+    counter.detach(doubleFormat);
+    for (int i = 0; i < 5; ++i) counter.increaseCounter();
+
     return 0;
 }
