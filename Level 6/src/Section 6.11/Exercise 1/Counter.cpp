@@ -1,4 +1,6 @@
 //
+// Concrete Subject used to illustrate state changes
+//
 // Created by Michael Lewis on 8/16/23.
 //
 
@@ -35,7 +37,7 @@ void Counter::decreaseCounter()
  * Returns the value of the counter
  * @return The value of the counter
  */
-int Counter::getCounter()
+int Counter::getCounter() const
 {
     return value;
 }

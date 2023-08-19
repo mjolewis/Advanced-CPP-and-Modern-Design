@@ -1,4 +1,6 @@
 //
+// Observer Pattern - Subjects can add, remove, and notify observers
+//
 // Created by Michael Lewis on 8/16/23.
 //
 

@@ -1,4 +1,6 @@
 //
+// Concrete Subject used to illustrate state changes
+//
 // Created by Michael Lewis on 8/16/23.
 //
 
@@ -24,7 +26,7 @@ public:
 
     void increaseCounter();
     void decreaseCounter();
-    int getCounter();
+    int getCounter() const;
 };
 
 
