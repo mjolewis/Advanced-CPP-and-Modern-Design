@@ -147,16 +147,41 @@ void test_BindingShapeFactories()
 }
 
 // Part D - Illustrate how to modify shapes using std::bind and lambdas
+// Note - Per https://quantnet.com/threads/7-2-b-a-little-bit-confused-about-std-bind-function.29217/post-241438
+// using std::bind is not actually necessary
 void test_ModifyShapes_Bind_Lambda()
 {
-    std::cout << "\n*** Modify Shapes using Bind and Lambda ***" << std::endl;
+    std::cout << "\n*** Default Initialize Shapes using GOF ***" << std::endl;
 
     ConsoleShapeFactory consoleShapeFactory;
 
-    // Line is the modified shape
+    // Default initialized circle using GOF, which is subsequently modified using modern C++ techniques
+    auto circleFunc = [&]()
+    {
+        /*
+         * Using std::bind is possible here, but not strictly necessary. As an example, you
+         * could use it like so:
+         * auto circle = std::bind(&ConsoleShapeFactory::createCircle, &consoleShapeFactory)();
+         */
+
+        auto circle = consoleShapeFactory.createCircle();
+        Point centerPoint = Point{9, 9};
+        double radius = 3;
+        circle.CenterPoint(centerPoint);
+        circle.Radius(radius);
+        return std::make_shared<Circle>(circle);
+    };
+
+    // Default initialized line using GOF, which is subsequently modified using modern C++ techniques
     auto lineFunc = [&]()
     {
-        auto line = std::bind(&ConsoleShapeFactory::createLine, &consoleShapeFactory)();
+        /*
+         * Using std::bind is possible here, but not strictly necessary. As an example, you
+         * could use it like so:
+         * auto line = std::bind(&ConsoleShapeFactory::createLine, &consoleShapeFactory)();
+         */
+
+        auto line = consoleShapeFactory.createLine();
         Point start = Point{9, 9};
         Point end = Point{9, 9};
         line.p1(start);
@@ -164,13 +189,31 @@ void test_ModifyShapes_Bind_Lambda()
         return std::make_shared<Line>(line);
     };
 
+    // Default initialized point using GOF, which is subsequently modified using modern C++ techniques
+    auto pointFunc = [&]()
+    {
+        /*
+         * Using std::bind is possible here, but not strictly necessary. As an example, you
+         * could use it like so:
+         * auto line = std::bind(&ConsoleShapeFactory::createLine, &consoleShapeFactory)();
+         */
+
+        auto point = consoleShapeFactory.createPoint();
+        point.X(9);
+        point.Y(9);
+        return std::make_shared<Point>(point);
+    };
+
     NewShapeFactory newShapeFactory;
+    newShapeFactory.addCircleFunction(circleFunc);
     newShapeFactory.addLineFunction(lineFunc);
+    newShapeFactory.addPointFunction(pointFunc);
 
     CirclePtr circle = newShapeFactory.createCircle();
     LinePtr line = newShapeFactory.createLine();
     PointPtr point = newShapeFactory.createPoint();
 
+    std::cout << "\n*** Modified Shapes using Modern C++ lambdas ***" << std::endl;
     std::cout << *circle << std::endl;
     std::cout << *line << std::endl;
     std::cout << *point << std::endl;
@@ -216,11 +259,14 @@ int main()
      * Brainstorm on how to integrate existing OOP code using lambda functions
      * (using wrappers, for example) and std::bind. In particular, investigate
      * how to modify objects using captured variables after they have been
-     * default initialised using GOF factories
+     * default initialized using GOF factories
      *
      * Response:
-     * See unit test above. However, we can use existing GOF patterns and bind them with lambdas
-     * to modify the shape, which can subsequently be used by the shape factory.
+     * See unit test above. However, we can use existing GOF patterns that are bridged into
+     * modern C++ techniques using lambda captures to capture either the default initialized shapes
+     * or the default initialized shape factories (such as above) into a lambda expression.
+     * The lambda expression can subsequently modify these shapes and be used as a bridge into
+     * a universal function wrapper to facilitate the modern Factory Pattern.
      */
     return 0;
 }
