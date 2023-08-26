@@ -107,5 +107,19 @@ int main()
     test_Gauss_Summation();
     test_Fibonacci_Sequential();
     test_Fibonacci_Parallelized();
+
+    /*
+     * Dependency Graphs
+     *
+     * Sequential Fibonacci
+     * A -> B -> C where A is the first sequence, B is the second sequence, and C is the final result
+     *
+     * Parallelized Fibonacci, where A and B can run in parallel but the final result is still dependent on both
+     * A
+     *   \
+     *    |-> C
+     *   /
+     * B
+     */
     return 0;
 }
