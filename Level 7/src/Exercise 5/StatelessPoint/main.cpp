@@ -59,6 +59,13 @@ void test_ApproximateDistance_StatelessPoint()
 // Illustrate how to implement generic strategies as concurrent tasks. This approach is for illustration
 // purposes given the simplistic nature of the distance algorithm; however, it would be a very effective
 // solution for more complicated strategies such as sorting, n-dimensional poly-types or others.
+// Note - Point could have been responsible for spinning up separate threads for the Strategy; however,
+// that is a more limiting approach. Instead, the approach belows gives control to the client. Meaning the
+// client gets to decide when to use concurrency vs when not to. To do this, the client can simply wrap
+// the strategy inside an async task (or another mechanism such as a packaged task). This approach is
+// beneficial because some Strategies perform faster without concurrency. For example a simple distance
+// calculation. While others benefit greatly from concurrency. For example, sorting strategies. Thus,
+// the client gets to choose the best approach for their desired Strategy.
 void test_Concurrent_Strategies()
 {
     std::cout << "*** Running Concurrent Strategies ***" << std::endl;
