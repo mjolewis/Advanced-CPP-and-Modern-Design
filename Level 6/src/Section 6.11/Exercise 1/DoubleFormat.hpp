@@ -21,7 +21,7 @@ public:
     DoubleFormat& operator=(const DoubleFormat& other) = default;
     DoubleFormat& operator=(DoubleFormat&& other) = default;
 
-    void update(const Subject& subject);
+    void update(const Subject& subject) override;
 };
 
 
