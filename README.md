@@ -50,10 +50,10 @@ and implementation of quantitative finance applications.
 5. BitmapHeap 
 6. Matrix Libraries (Boost uBLAS) Signals and Slots (Boost signals2)
 
-***Level 6 - Modern Design Patterns***
-1. A refresh of the GOF design patterns using modern C++ techniques. Patterns include:
-2. Singleton
-3. Factory
+***Level 6 - Modern Design Patterns***\
+****A refresh of the GOF design patterns using modern C++ techniques. Patterns include****
+1. Singleton
+2. Factory
 3. Composite
 4. Prototype
 5. Proxy
