@@ -37,7 +37,7 @@ and implementation of quantitative finance applications.
 3. C++ Tasks and tasking applications 
 4. Extensions for Parallel STL
 
-***Level 4 - STL, Data Structures, and Random Numbers***\
+***Level 4 - STL, Data Structures, and Random Numbers***
 1. New data structures and data types 
 2. STL algorithms in a multi-paradigm programming environment 
 3. Random numbers and statistical distributions
@@ -48,7 +48,7 @@ and implementation of quantitative finance applications.
 3. Regular expressions and RegexHash 
 4. Unordered 
 5. BitmapHeap 
-6. Matrix Libraries (Boost bullas) Signals and Slots (Boost signals2)
+6. Matrix Libraries (Boost uBLAS) Signals and Slots (Boost signals2)
 
 ***Level 6 - Modern Design Patterns***
 1. A refresh of the GOF design patterns using modern C++ techniques. Patterns include:
