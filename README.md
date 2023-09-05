@@ -14,7 +14,7 @@ and implementation of quantitative finance applications.
 4. Universal function wrappers and C++11 Bind 
 5. Sealed Classes
 
-***Level 2 - Advanced C++ Features***\
+***Level 2 - Advanced C++ Features***
 1. Type Traits and Template Metaprogramming
 2. Advanced Lambdas
 3. Variadic Template Metaprogramming
@@ -31,7 +31,7 @@ and implementation of quantitative finance applications.
 15. std::optional 
 16. std::span
 
-***Level 3 - Concurrency***\
+***Level 3 - Concurrency***
 1. Essentials of Boost and C++11 threading 
 2. Advanced C++ Concurrency 
 3. C++ Tasks and tasking applications 
@@ -42,7 +42,7 @@ and implementation of quantitative finance applications.
 2. STL algorithms in a multi-paradigm programming environment 
 3. Random numbers and statistical distributions
 
-***Level 5 - Boost Libraries***\
+***Level 5 - Boost Libraries***
 1. Boost Libraries Overview S
 2. tring Algorithm Library 
 3. Regular expressions and RegexHash 
@@ -50,7 +50,7 @@ and implementation of quantitative finance applications.
 5. BitmapHeap 
 6. Matrix Libraries (Boost bullas) Signals and Slots (Boost signals2)
 
-***Level 6 - Modern Design Patterns***\
+***Level 6 - Modern Design Patterns***
 1. A refresh of the GOF design patterns using modern C++ techniques. Patterns include:
 2. Singleton
 3. Factory
@@ -64,7 +64,7 @@ and implementation of quantitative finance applications.
 10. Observer
 11. Propagator
 
-***Level 7 - Modern Design Patterns Continued + Advanced Language Features***\
+***Level 7 - Modern Design Patterns Continued + Advanced Language Features***
 1. Factory
 2. Template Method Pattern
 3. State
